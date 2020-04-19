@@ -1,0 +1,42 @@
+{
+    "name": "typescript-server-boilerplate",
+    "version": "1.0.0",
+    "main": "server.js",
+    "dependencies": {
+        "mongoose": "^5.6.9",
+        "socket.io": "^2.3.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.5.5",
+        "@babel/preset-env": "^7.1.6",
+        "@types/express": "^4.17.0",
+        "@types/mongoose": "^5.5.12",
+        "@types/node": "^12.12.36",
+        "@types/socket.io": "^2.1.4",
+        "@typescript-eslint/eslint-plugin": "^1.13.0",
+        "@typescript-eslint/parser": "^1.13.0",
+        "eslint": "^6.1.0",
+        "gulp": "^4.0.2",
+        "gulp-babel": "^8.0.0",
+        "gulp-eslint": "^6.0.0",
+        "gulp-typescript": "^5.0.1",
+        "gulp-uglify": "^3.0.2",
+        "typescript": "^3.2.1"
+    },
+    "scripts": {
+        "build": "./node_modules/.bin/gulp",
+        "dev": "./node_modules/.bin/gulp devBuild && npm start",
+        "start": "node ./dist/server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/JinhyeokFang/typescript-server-boilerplate.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/JinhyeokFang/typescript-server-boilerplate/issues"
+    },
+    "homepage": "https://github.com/JinhyeokFang/typescript-server-boilerplate#readme",
+    "description": ""
+}
