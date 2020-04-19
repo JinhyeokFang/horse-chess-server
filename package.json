@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "server.js",
     "dependencies": {
-        "mongoose": "^5.6.9",
+        "mongoose": "^5.7.5",
         "socket.io": "^2.3.0"
     },
     "devDependencies": {
