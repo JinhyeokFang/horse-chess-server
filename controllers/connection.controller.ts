@@ -1,4 +1,4 @@
-import Store from "../store";
+import connectionService from "../services/connection.service";
 
 class ConnectionController {
     public constructor (messageSender, socket) {
@@ -7,12 +7,11 @@ class ConnectionController {
     }
 
     public connect(socket: any): void {
-        Store.getInstance().connectUser(socket.id);
-        console.dir(Store.getInstance().userList)
+        connectionService.connect(socket.id);
     }
     
     public disconnect(socket: any): void {
-        Store.getInstance().disconnectUser(socket.id);
+        connectionService.disconnect(socket.id);
     }
 }
 

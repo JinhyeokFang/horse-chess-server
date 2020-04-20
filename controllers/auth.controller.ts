@@ -1,9 +1,6 @@
 import authService from '../services/auth.service'
-import Store from '../store'
 
 class AuthController {
-    private store = Store.getInstance();
-
     public constructor (messageSender, socket) {
         socket.on("loginRequest", data => this.login(data, socket));
         socket.on("registerRequest", data => this.register(data, socket));
@@ -22,9 +19,9 @@ class AuthController {
     }
     
     public register(data: any, socket: any): void {
-        let { username, password } = data;  
+        let { username, password, nickname } = data;  
         console.log("register")
-        authService.register(username, password, (result: any): void => {
+        authService.register(username, password, nickname, (result: any): void => {
             if (result.err) {
                 socket.emit("registerResponse", {success: false, err: result.err })
             } else {
