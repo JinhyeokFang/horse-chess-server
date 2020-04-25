@@ -1,7 +1,7 @@
 import authService from '../services/auth.service'
 
 class AuthController {
-    public constructor (messageSender, socket) {
+    public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
         socket.on("loginRequest", data => this.login(data, socket));
         socket.on("registerRequest", data => this.register(data, socket));
     }
@@ -9,7 +9,7 @@ class AuthController {
     public login(data: any, socket: any): void {
         let { username, password } = data;
         
-        authService.login(username, password, (result: any): void => {
+        authService.login(socket.id, username, password, (result: any): void => {
             if (result.err) {
                 socket.emit("loginResponse", {success: false, err: result.err })
             } else {
@@ -20,8 +20,7 @@ class AuthController {
     
     public register(data: any, socket: any): void {
         let { username, password, nickname } = data;  
-        console.log("register")
-        authService.register(username, password, nickname, (result: any): void => {
+        authService.register(socket.id, username, password, nickname, (result: any): void => {
             if (result.err) {
                 socket.emit("registerResponse", {success: false, err: result.err })
             } else {
