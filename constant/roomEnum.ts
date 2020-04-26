@@ -1,8 +1,9 @@
 enum GameStatus {
     Waiting = 0,
-    InGame = 1,
-    End = 2,
-    WillBeDeleted = 3
+    OnReady = 1,
+    InGame = 2,
+    End = 3,
+    WillBeDeleted = 4
 };
 
 /*

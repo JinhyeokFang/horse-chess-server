@@ -21,7 +21,7 @@
         "gulp-eslint": "^6.0.0",
         "gulp-typescript": "^5.0.1",
         "gulp-uglify": "^3.0.2",
-        "typescript": "^3.2.1"
+        "typescript": "^3.8.3"
     },
     "scripts": {
         "build": "./node_modules/.bin/gulp",

@@ -1,18 +1,18 @@
 import matchingService from '../services/matching.service'
+import Result from '../types/result.type';
 
 class MatchingController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
-        socket.on("getRoomRequest", data => this.getRoom(data, socket));
-        socket.on("enterRoomRequest", data => this.enterRoom(data, socket));
+        socket.on("getRoomRequest", (data): void => this.getRoom(data, socket));
+        socket.on("enterRoomRequest", (data): void => this.enterRoom(data, socket));
     }
 
-    public getRoom(data: any, socket: any): void {
-        socket.emit("getRoomResponse", { success: true, roomList: matchingService.getRoomList() })
+    public getRoom(data, socket): void {
+        socket.emit("getRoomResponse", { success: true, roomList: matchingService.getRoomList() });
     }
 
-    public enterRoom(data: any, socket: any): void {
-        let { roomId } = data;
-        let result = matchingService.enterRoom(socket);
+    public enterRoom(data, socket): void {
+        let result: Result = matchingService.enterRoom(socket.id);
         socket.emit("enterRoomResponse", result);
     }
 }

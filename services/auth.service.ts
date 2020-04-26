@@ -2,10 +2,11 @@ import { encrypt } from '../utils/crypto';
 import UserModelT from '../types/user.type';
 import UserModel from '../models/user.model';
 import Store from '../store';
+import Result from '../types/result.type';
 
 class AuthService {
-    public login(userSocketId: number, username: string, password: string, callback: Function): void {
-        let store = Store.getInstance(); //저장소 객체 불러오기
+    public login(userSocketId: string, username: string, password: string, callback: Function): void {
+        let store: Store = Store.getInstance(); //저장소 객체 불러오기
 
         UserModel.findOne({username: encrypt(username), password: encrypt(password)}, (err: object, res: UserModelT): void => {
             if (err) { // DB 에러
@@ -13,7 +14,7 @@ class AuthService {
             } else if (res == null) { // 없는 유저임
                 callback({ message: "failed", err: "찾을수 없는 유저입니다." });
             } else {
-                let result = store.loginUser(userSocketId, username); //로그인 시도
+                let result: Result = store.loginUser(userSocketId, username); //로그인 시도
                 if (result.success) {
                     callback({ message: "complete" });
                 } else {
@@ -23,8 +24,8 @@ class AuthService {
         });
     }
 
-    public register(userSocketId: number, username: string, password: string, nickname: string, callback: Function): void {
-        let store = Store.getInstance(); //저장소 객체 불러오기
+    public register(userSocketId: string, username: string, password: string, nickname: string, callback: Function): void {
+        let store: Store = Store.getInstance(); //저장소 객체 불러오기
         
         UserModel.findOne({username: encrypt(username)}, (err: object, res: UserModelT): void => {
             if (err) { //DB 에러
