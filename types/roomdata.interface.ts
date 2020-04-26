@@ -1,5 +1,5 @@
-import { BoxStatus } from "../constant/chessboardEnum";
-import { GameStatus } from "../constant/roomEnum";
+import { BoxStatus } from "./chessboard.enum";
+import { GameStatus } from "./room.enum";
 
 interface RoomData {
     users: any[];

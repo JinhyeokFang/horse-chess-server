@@ -1,8 +1,8 @@
 import { encrypt } from '../utils/crypto';
-import UserModelT from '../types/user.type';
+import UserModelT from '../types/user.interface';
 import UserModel from '../models/user.model';
 import Store from '../store';
-import Result from '../types/result.type';
+import Result from '../types/result.interface';
 
 class AuthService {
     public login(userSocketId: string, username: string, password: string, callback: Function): void {

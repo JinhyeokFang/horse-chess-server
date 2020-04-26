@@ -1,6 +1,6 @@
 import Store from '../store'
-import Result from '../types/result.type';
-import RoomData from '../types/roomdata.type';
+import Result from '../types/result.interface';
+import RoomData from '../types/roomdata.interface';
 
 class MatchingService {
     public getRoomList(): RoomData[] {

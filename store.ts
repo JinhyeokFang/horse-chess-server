@@ -1,10 +1,10 @@
-import { GameStatus } from "./constant/roomEnum";
-import { BoxStatus } from "./constant/chessboardEnum";
+import { GameStatus } from "./types/room.enum";
+import { BoxStatus } from "./types/chessboard.enum";
 
-import Position from "./types/position.type";
-import Result from "./types/result.type";
-import UserData from "./types/userdata.type";
-import RoomData from "./types/roomdata.type";
+import Position from "./types/position.interface";
+import Result from "./types/result.interface";
+import UserData from "./types/userdata.interface";
+import RoomData from "./types/roomdata.interface";
 
 class Store {
     private static instance: Store;

@@ -1,5 +1,5 @@
 import connectionService from "../services/connection.service";
-import Result from "../types/result.type";
+import Result from "../types/result.interface";
 
 class ConnectionController {
     public constructor (messageSender: Function, socket) { // 메세지 입력받을 라우터 등록

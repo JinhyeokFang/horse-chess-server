@@ -1,5 +1,5 @@
 import authService from '../services/auth.service'
-import Result from '../types/result.type';
+import Result from '../types/result.interface';
 
 class AuthController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록

@@ -1,5 +1,5 @@
 import matchingService from '../services/matching.service'
-import Result from '../types/result.type';
+import Result from '../types/result.interface';
 
 class MatchingController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록

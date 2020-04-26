@@ -1,5 +1,5 @@
 import Store from "../store";
-import Result from "../types/result.type";
+import Result from "../types/result.interface";
 
 class ConnectionService {
     public connect(userSocketId: string): void {

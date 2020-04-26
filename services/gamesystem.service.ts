@@ -1,7 +1,7 @@
 import Store from '../store';
-import { BoxStatus } from '../constant/chessboardEnum';
-import Result from '../types/result.type';
-import Position from '../types/position.type';
+import { BoxStatus } from '../types/chessboard.enum';
+import Result from '../types/result.interface';
+import Position from '../types/position.interface';
 
 class GameSystemService {
     public getRoomData(userSocketId: string): Result {
