@@ -1,0 +1,30 @@
+version: "3.5"
+services:
+  mongodb:
+    container_name: mongo
+    image: mvertes/alpine-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo:/data/db
+    networks:
+      - backend
+
+  server:
+    container_name: server
+    build: .
+    ports:
+      - "80:8000"
+    environment:
+      - NODE_PATH=src
+      - DB_HOST=mongo
+      - DB=dbdb
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  mongo:

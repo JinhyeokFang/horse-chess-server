@@ -34,8 +34,11 @@ class Store {
 
     public createRoom(userSocketId: string): Result {
         let roomId = this.roomDataList.length;
+        let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
+        if (userData === undefined) // 유저 정보가 없으면
+            return { success: false, err: "유저 정보가 없습니다." };
         this.roomDataList.push({ 
-            users: [{userSocketId}], // 방에 입장한 유저리스트, 최대 2명
+            users: [userData], // 방에 입장한 유저리스트, 최대 2명
             chessboard: new Array(8).fill(new Array(8).fill(BoxStatus.Blank)), // 체스 판
             gameStatus: GameStatus.Waiting,
             blackIsReady: false,
@@ -47,14 +50,18 @@ class Store {
     public enterRoom(roomId: number, userSocketId: string): Result {
         // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
         let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId); // 0번째 유저인가?
+        let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
+        
         if (roomIndex != -1)
             roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
         if (roomIndex != -1) // 이미 유저가 방에 접속한경우
             return { success: false, err: "이미 유저가 방에 접속해있습니다." };
+        if (userData === undefined) // 유저 정보가 없으면
+            return { success: false, err: "유저 정보가 없습니다." };
 
         let numOfUsers: number = this.roomDataList[roomId].users.length;
         if (numOfUsers == 1) { // 방에 유저가 한명이면
-            this.roomDataList[roomId].users.push({userSocketId}); // 유저 추가하고
+            this.roomDataList[roomId].users.push(userData); // 유저 추가하고
             this.roomDataList[roomId].gameStatus = GameStatus.OnReady; // 게임 시작
 
             return { success: true, data: { roomId } };

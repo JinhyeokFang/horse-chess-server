@@ -1,6 +1,6 @@
 interface Result {
     success: boolean;
-    err?: any;
+    err?: string;
     data?: any;
 };
 
