@@ -12,9 +12,9 @@ class AuthController {
         
         authService.login(socket.id, username, password, (result: Result): void => {
             if (result.err) {
-                socket.emit("loginResponse", { success: false, err: result.err })
+                socket.emit("loginResponse", { success: false, err: result.err });
             } else {
-                socket.emit("loginResponse", { success: true, username })
+                socket.emit("loginResponse", { success: true, data: {username} });
             }
         });
     }
@@ -25,7 +25,7 @@ class AuthController {
             if (result.err) {
                 socket.emit("registerResponse", { success: false, err: result.err })
             } else {
-                socket.emit("registerResponse", { success: true, username })
+                socket.emit("registerResponse", { success: true, data: {username} })
             }
         });
     }

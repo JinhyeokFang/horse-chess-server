@@ -9,7 +9,7 @@ class GameSystemController {
 
     public getRoomData (data, socket): void {
         let result: Result = gameSystemService.getRoomData(socket.id);
-        socket.emit("getRoomDataResponse", { success: true, roomData: result.data });
+        socket.emit("getRoomDataResponse", { success: true, data: {roomData: result.data }});
     }
 
     public place (data, socket): void {

@@ -8,7 +8,7 @@ class MatchingController {
     }
 
     public getRoom(data, socket): void {
-        socket.emit("getRoomResponse", { success: true, roomList: matchingService.getRoomList() });
+        socket.emit("getRoomResponse", { success: true, data: {roomList: matchingService.getRoomList()} });
     }
 
     public enterRoom(data, socket): void {
