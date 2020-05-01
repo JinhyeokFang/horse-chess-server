@@ -12,7 +12,7 @@ class AuthService {
             if (err) { // DB 에러
                 callback({ message: "failed", err });
             } else if (res == null) { // 없는 유저임
-                callback({ message: "failed", err: "찾을수 없는 유저입니다." });
+                callback({ message: "failed", err: "찾을수 없는 유저입니다" });
             } else {
                 let result: Result = store.loginUser(userSocketId, username); //로그인 시도
                 if (result.success) {
@@ -31,20 +31,28 @@ class AuthService {
             if (err) { //DB 에러
                 callback({ message: "failed", err });
             } else if (res == null) { // 회원가입 되어있지 않은 유저
-                new UserModel({username: encrypt(username), password: encrypt(password), nickname, rate: 0}).save((err: object): void => {
+                UserModel.findOne({nickname}, (err: object, res: UserModelT): void => {
                     if (err) { //DB 에러
                         callback({ message: "failed", err });
-                    } else {
-                        let result = store.loginUser(userSocketId, username); //로그인 시도
-                        if (result.success) {
-                            callback({ message: "complete" });
-                        } else {
-                            callback({ message: "failed", err: result.err });
-                        }
+                    } else if (res == null) { // 닉네임이 겹치지 않으면
+                        new UserModel({username: encrypt(username), password: encrypt(password), nickname, rate: 0}).save((err: object): void => {
+                            if (err) { //DB 에러
+                                callback({ message: "failed", err });
+                            } else {
+                                let result = store.loginUser(userSocketId, username);
+                                if (result.success) {
+                                    callback({ message: "complete" });
+                                } else {
+                                    callback({ message: "failed", err: result.err });
+                                }
+                            }
+                        })
+                    } else { // 닉네임이 겹치는 유저
+                        callback({ message: "failed", err: "같은 닉네임이 존재합니다"});
                     }
-                })
+                });
             } else { // 이미 회원가입 된 유저
-                callback({ message: "failed", err: "이미 존재하는 유저입니다."});
+                callback({ message: "failed", err: "이미 존재하는 유저입니다"});
             }
         });
     }

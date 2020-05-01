@@ -24,7 +24,7 @@ class MatchingService {
                 return { success: false, err: result.err };
             }
         } else { // 알 수 없는 오류
-            return { success: false, err: "서버에 문제가 발생했습니다. MatchingService" };
+            return { success: false, err: "서버에 문제가 발생했습니다 MatchingService" };
         }
     }
 }

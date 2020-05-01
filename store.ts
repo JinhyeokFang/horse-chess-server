@@ -28,7 +28,7 @@ class Store {
             this.userDataList[userDataIndex].username = username; // username 등록
             return { success: true };
         } else { // 이미 로그인 했거나 없는 유저
-            return { success: false, err: "로그인 할 수 없습니다." };
+            return { success: false, err: "로그인 할 수 없습니다" };
         }
     }
 
@@ -36,7 +36,7 @@ class Store {
         let roomId = this.roomDataList.length;
         let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
         if (userData === undefined) // 유저 정보가 없으면
-            return { success: false, err: "유저 정보가 없습니다." };
+            return { success: false, err: "유저 정보가 없습니다" };
         this.roomDataList.push({ 
             users: [userData], // 방에 입장한 유저리스트, 최대 2명
             chessboard: new Array(8).fill(new Array(8).fill(BoxStatus.Blank)), // 체스 판
@@ -55,9 +55,9 @@ class Store {
         if (roomIndex != -1)
             roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
         if (roomIndex != -1) // 이미 유저가 방에 접속한경우
-            return { success: false, err: "이미 유저가 방에 접속해있습니다." };
+            return { success: false, err: "이미 유저가 방에 접속해있습니다" };
         if (userData === undefined) // 유저 정보가 없으면
-            return { success: false, err: "유저 정보가 없습니다." };
+            return { success: false, err: "유저 정보가 없습니다" };
 
         let numOfUsers: number = this.roomDataList[roomId].users.length;
         if (numOfUsers == 1) { // 방에 유저가 한명이면
@@ -67,9 +67,9 @@ class Store {
             return { success: true, data: { roomId } };
         } else { // 접속 불가
             if (numOfUsers == 0)
-                return { success: false, err: "잘못된 방입니다. 방에 유저가 존재하지 않습니다." };
+                return { success: false, err: "잘못된 방입니다. 방에 유저가 존재하지 않습니다" };
             else
-                return { success: false, err: "잘못된 방입니다. 방에 유저가 이미 두명이거나 두명 이상입니다." };
+                return { success: false, err: "잘못된 방입니다. 방에 유저가 이미 두명이거나 두명 이상입니다" };
         }
     }
 
@@ -101,7 +101,7 @@ class Store {
             if (room.chessboard[x][y] == BoxStatus.Forbidden ||
                 color == BoxStatus.White && room.chessboard[x][y] == BoxStatus.Black ||
                 color == BoxStatus.Black && room.chessboard[x][y] == BoxStatus.White) { // 갈 수 없는 타일일 경우
-                return { success: false, err: "갈 수 없는 곳입니다." };
+                return { success: false, err: "갈 수 없는 곳입니다" };
             } else {
                 room.chessboard[x][y] = color;
                 return { success: true };
@@ -110,9 +110,9 @@ class Store {
             room.chessboard[x][y] = color;
             return { success: true };
         } else if (color == room.chessboard[x][y]) { // 똑같은 색일 경우
-            return { success: false, err: "이미 색이 " + color + "인 타일입니다." };
+            return { success: false, err: "이미 색이 " + color + "인 타일입니다" };
         } else { // 잘못 입력
-            return { success: false, err: "잘못된 색입니다." };
+            return { success: false, err: "잘못된 색입니다" };
         }
         
     }
