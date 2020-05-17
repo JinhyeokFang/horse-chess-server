@@ -42,7 +42,8 @@ class Store {
             chessboard: new Array(8).fill(new Array(8).fill(BoxStatus.Blank)), // 체스 판
             gameStatus: GameStatus.Waiting,
             blackIsReady: false,
-            whiteIsReady: false}); // 게임 진행 상태
+            whiteIsReady: false,
+            turn: BoxStatus.Black}); // 게임 진행 상태
 
         return { success: true, data: { roomId } };
     }
@@ -174,6 +175,14 @@ class Store {
         }
 
         return moveableBoxes;
+    }
+
+    public getUsername(userSocketId: string): string | null {
+        let userdata = this.userDataList.find(user => user.userSocketId == userSocketId);
+        if (userdata == undefined)
+            return null;
+        else
+            return userdata.username;
     }
 
     public static getInstance(): Store { // 저장소이므로 싱글톤

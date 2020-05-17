@@ -8,6 +8,7 @@ interface RoomData {
     gameStatus: GameStatus;
     blackIsReady: boolean;
     whiteIsReady: boolean;
+    turn: BoxStatus;
 };
 
 export default RoomData;

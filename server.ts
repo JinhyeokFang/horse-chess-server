@@ -23,3 +23,5 @@ io.on("connection", (socket: Socket): void => { // 컨트롤러 바인딩
     new MatchingController(messageSender, socket); // 유저들을 매칭시켜줌
     new GameSystemController(messageSender, socket); // 게임 시스템 관련
 });
+
+console.log("service is running");

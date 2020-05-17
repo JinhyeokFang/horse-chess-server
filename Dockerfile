@@ -3,10 +3,10 @@ FROM node:10.13.0
 MAINTAINER jinhyeokfang <jinhyeokfang@gmail.com>
 
 RUN mkdir -p /app
+RUN mkdir -p /data/db
 WORKDIR /app
 ADD . /app
 RUN npm install
-RUN npm run build
 
 ENV NODE_ENV development
 

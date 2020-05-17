@@ -2,7 +2,7 @@ version: "3.5"
 services:
   mongodb:
     container_name: mongo
-    image: mvertes/alpine-mongo
+    image: mongo
     ports:
       - "27017:27017"
     volumes:
@@ -14,13 +14,15 @@ services:
     container_name: server
     build: .
     ports:
-      - "80:8000"
+      - "80:80"
     environment:
       - NODE_PATH=src
       - DB_HOST=mongo
       - DB=dbdb
     networks:
       - backend
+    depends_on:
+      - mongodb
 
 networks:
   backend:

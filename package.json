@@ -1,5 +1,5 @@
 {
-    "name": "typescript-server-boilerplate",
+    "name": "horse-chess-server",
     "version": "1.0.0",
     "main": "server.js",
     "dependencies": {
@@ -25,8 +25,8 @@
     },
     "scripts": {
         "build": "./node_modules/.bin/gulp",
-        "dev": "./node_modules/.bin/gulp devBuild && npm start",
-        "start": "node ./dist/server.js"
+        "dev": "./node_modules/.bin/gulp devBuild && node ./dist/server.js",
+        "start": "npm run build; node ./dist/server.js"
     },
     "repository": {
         "type": "git",

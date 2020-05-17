@@ -4,9 +4,9 @@ import config from './config';
 
 class DB {
     public initialize(): void {
-        mongoose.connect(`mongodb://localhost/${config.db.name}`, {
-            useNewUrlParser: true
-        })
+        mongoose.connect(`mongodb://mongodb/dbdb`, {
+            useNewUrlParser: true,
+        }).catch(console.error);
     }
 }
 
