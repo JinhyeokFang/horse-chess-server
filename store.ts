@@ -203,6 +203,14 @@ class Store {
             return userdata.username;
     }
 
+    public getRoom(roomid: number): RoomData | null {
+        let roomData = this.roomDataList[roomid];
+        if (roomData == undefined)
+            return null;
+        else
+            return roomData;
+    }
+
     public static getInstance(): Store { // 저장소이므로 싱글톤
         if (!Store.instance)
             Store.instance = new Store();

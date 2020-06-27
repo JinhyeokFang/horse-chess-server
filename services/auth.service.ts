@@ -66,7 +66,6 @@ class AuthService {
             } else if (res == null) {
                 callback({ message: "failed", err: "존재하지 않는 유저입니다." });
             } else {
-                res.username = username;
                 res.password = "";
                 UserModel.count({ rate: { "$gte" : res.rate } }, (err: object, count: number): void => {
                     res.rankingPosition = count;
