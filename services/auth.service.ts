@@ -25,6 +25,13 @@ class AuthService {
         });
     }
 
+    public logout(userSocketId: string, callback: Function): void {
+        let store: Store = Store.getInstance();
+        store.disconnectUser(userSocketId);
+        store.connectUser(userSocketId);
+        callback({ message: "complete" });
+    }
+
     public register(userSocketId: string, username: string, password: string, nickname: string, callback: Function): void {
         let store: Store = Store.getInstance(); //저장소 객체 불러오기
         

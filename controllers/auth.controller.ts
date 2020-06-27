@@ -4,6 +4,7 @@ import Result from '../types/result.interface';
 class AuthController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
         socket.on("loginRequest", (data): void => this.login(data, socket));
+        socket.on("logoutRequest", (data): void => this.logout(data, socket));
         socket.on("registerRequest", (data): void => this.register(data, socket));
         socket.on("pushFriendReqRequest", (data): void => this.pushFriendRequestment(data, socket));
         socket.on("acceptFriendReqRequest", (data): void => this.acceptFriendRequestment(data, socket));
@@ -24,6 +25,12 @@ class AuthController {
                     }
                 });
             }
+        });
+    }
+
+    public logout(data, socket): void {
+        authService.logout(socket.id, (result: Result): void => {
+            socket.emit("logoutResponse", { success: true });
         });
     }
     
