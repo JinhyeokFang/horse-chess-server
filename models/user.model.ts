@@ -4,6 +4,7 @@ import UserModelT from '../types/user.interface';
 const userSchema = new Schema({
     username: String,
     password: String,
+    nickname: String,
     rate: Number,  // 레이팅 점수
     numOfPlayedGame: Number,
     numOfWonGame: Number,
