@@ -155,23 +155,41 @@ class Store {
         }
     }
 
-    public findMoveableBoxes(x: number, y: number): Position[] {
-        let moveableBoxes: Position[] = [];
-        if (x > 1) {
-            moveableBoxes.push({x: x-2, y: y-1});
-            moveableBoxes.push({x: x-2, y: y+1});
+    public findBoxes(position: Position): Position[] {
+        let boxes: Position[] = [];
+        if (position.x > 1) {
+            boxes.push({x: x-2, y: y-1});
+            boxes.push({x: x-2, y: y+1});
         }
-        if (x < 6) {
-            moveableBoxes.push({x: x+2, y: y-1});
-            moveableBoxes.push({x: x+2, y: y+1});
+        if (position.x < 6) {
+            boxes.push({x: x+2, y: y-1});
+            boxes.push({x: x+2, y: y+1});
         }
-        if (y > 1) {
-            moveableBoxes.push({x: x-1, y: y-2});
-            moveableBoxes.push({x: x+1, y: y-2});
+        if (position.y > 1) {
+            boxes.push({x: x-1, y: y-2});
+            boxes.push({x: x+1, y: y-2});
         }
-        if (y < 6) {
-            moveableBoxes.push({x: x-1, y: y+2});
-            moveableBoxes.push({x: x+1, y: y+2});
+        if (position.y < 6) {
+            boxes.push({x: x-1, y: y+2});
+            boxes.push({x: x+1, y: y+2});
+        }
+
+        return boxes;
+    }
+
+    public findMoveableBoxes(position: Position, color: BoxStatus, roomId: number, prevPositions: Array<Position>): Set<Position> {
+        let moveableBoxes = new Set<Position>;
+        let boxes = this.findBoxes(position);
+
+        prevPositions.push()
+
+        for (let box of boxes) {
+            let boxSt = this.roomDataList[roomId].chessboard[boxes.x][boxes.y];
+            if (boxSt == color) {
+                moveableBoxes = new Set([...Array.from(this.findMoveableBoxes(position, color, roomId, prevPositions).values()), ...Array.from(moveableBoxes)]);
+            } else (boxSt == BoxStatus.Blank) {
+                moveableBoxes.add(box);
+            } 
         }
 
         return moveableBoxes;

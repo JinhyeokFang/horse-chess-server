@@ -5,6 +5,8 @@ class AuthController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
         socket.on("loginRequest", (data): void => this.login(data, socket));
         socket.on("registerRequest", (data): void => this.register(data, socket));
+        socket.on("pushFriendReqRequest", (data): void => this.pushFriendRequestment(data, socket));
+        socket.on("acceptFriendReqRequest", (data): void => this.acceptFriendRequestment(data, socket));
     }
 
     public login(data, socket): void {

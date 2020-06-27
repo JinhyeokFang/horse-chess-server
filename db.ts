@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-import config from './config';
-
 class DB {
     public initialize(): void {
         mongoose.connect(`mongodb://mongodb/dbdb`, {
