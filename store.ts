@@ -158,36 +158,36 @@ class Store {
     public findBoxes(position: Position): Position[] {
         let boxes: Position[] = [];
         if (position.x > 1) {
-            boxes.push({x: x-2, y: y-1});
-            boxes.push({x: x-2, y: y+1});
+            boxes.push({x: position.x-2, y: position.y-1});
+            boxes.push({x: position.x-2, y: position.y+1});
         }
         if (position.x < 6) {
-            boxes.push({x: x+2, y: y-1});
-            boxes.push({x: x+2, y: y+1});
+            boxes.push({x: position.x+2, y: position.y-1});
+            boxes.push({x: position.x+2, y: position.y+1});
         }
         if (position.y > 1) {
-            boxes.push({x: x-1, y: y-2});
-            boxes.push({x: x+1, y: y-2});
+            boxes.push({x: position.x-1, y: position.y-2});
+            boxes.push({x: position.x+1, y: position.y-2});
         }
         if (position.y < 6) {
-            boxes.push({x: x-1, y: y+2});
-            boxes.push({x: x+1, y: y+2});
+            boxes.push({x: position.x-1, y: position.y+2});
+            boxes.push({x: position.x+1, y: position.y+2});
         }
 
         return boxes;
     }
 
     public findMoveableBoxes(position: Position, color: BoxStatus, roomId: number, prevPositions: Array<Position>): Set<Position> {
-        let moveableBoxes = new Set<Position>;
+        let moveableBoxes = new Set<Position>();
         let boxes = this.findBoxes(position);
 
-        prevPositions.push()
+        prevPositions.push();
 
         for (let box of boxes) {
-            let boxSt = this.roomDataList[roomId].chessboard[boxes.x][boxes.y];
+            let boxSt = this.roomDataList[roomId].chessboard[box.x][box.y];
             if (boxSt == color) {
                 moveableBoxes = new Set([...Array.from(this.findMoveableBoxes(position, color, roomId, prevPositions).values()), ...Array.from(moveableBoxes)]);
-            } else (boxSt == BoxStatus.Blank) {
+            } else if (boxSt == BoxStatus.Blank) {
                 moveableBoxes.add(box);
             } 
         }

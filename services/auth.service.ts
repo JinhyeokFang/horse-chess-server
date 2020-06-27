@@ -102,12 +102,12 @@ class AuthService {
                 UserModel.findOne({ username: encrypt(TSdoesntknowusernameisstring) }, (err: object, res: UserModelT): void => {
                     if (err) {
                         callback({ message: "failed", err });
-                    } else if (res.pendingFriendsList.find(user => user == username) {
+                    } else if (res.pendingFriendsList.find(user => user == username) !== undefined) {
                         UserModel.updateOne({ username: encrypt(TSdoesntknowusernameisstring) }, { $push: { friendsList: friendname }}, err => {
                             if (err) {
                                 callback({ message: "failed", err });
                             } else {
-                                UserModel.updateOne({ username: encrypt(friendname) }, { $push: { friendsList: TSdoesntknowusernameisstring }, $pull: { pendingFriendsList: TSdoentknowusernameisstring } }, err => {
+                                UserModel.updateOne({ username: encrypt(friendname) }, { $push: { friendsList: TSdoesntknowusernameisstring }, $pull: { pendingFriendsList: TSdoesntknowusernameisstring } }, err => {
                                     if (err) {
                                         callback({ message: "failed", err });
                                     } else {

@@ -50,7 +50,7 @@ class AuthController {
             if (result.err) {
                 socket.emit("pushFriendReqResponse", { success: false, err: result.err });
             } else {
-                socket.emit("pushFriendReqResponse", { success: false, data: { status: result.status } });
+                socket.emit("pushFriendReqResponse", { success: false, data: { status: result.data.status } });
             }
         });
     }
@@ -61,7 +61,7 @@ class AuthController {
             if (result.err) {
                 socket.emit("acceptFriendReqResponse", { success: false, err: result.err });
             } else {
-                socket.emit("acceptFriendReqResponse", { success: false, data: { status: result.status } });
+                socket.emit("acceptFriendReqResponse", { success: false, data: { status: result.data.status } });
             }
         });
     }
