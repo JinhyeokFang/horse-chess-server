@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 class DB {
     public initialize(): void {
-        mongoose.connect(`mongodb://mongodb/dbdb`, {
+        mongoose.connect(`mongodb://localhost/dbdb`, {
             useNewUrlParser: true,
         }).catch(console.error);
     }

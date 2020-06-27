@@ -5,6 +5,7 @@ const userSchema = new Schema({
     username: String,
     password: String,
     nickname: String,
+    ranking: Number,
     rate: Number,  // 레이팅 점수
     numOfPlayedGame: Number,
     numOfWonGame: Number,

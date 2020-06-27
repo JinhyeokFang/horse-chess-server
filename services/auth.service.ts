@@ -69,7 +69,7 @@ class AuthService {
                 res.username = username;
                 res.password = "";
                 UserModel.count({ rate: { "$gte" : res.rate } }, (err: object, count: number): void => {
-                    res.rankingPosition = count;
+                    res.ranking = count;
                     callback({ message: "complete", data: { userData: res } });
                 });
             }
