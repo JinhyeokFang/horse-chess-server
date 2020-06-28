@@ -33,6 +33,8 @@ class Store {
     }
 
     public createRoom(userSocketId: string): Result {
+        console.log("createRoom", userSocketId);
+
         let roomId = this.roomDataList.length;
         let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
         if (userData === undefined) // 유저 정보가 없으면
@@ -49,6 +51,7 @@ class Store {
     }
 
     public enterRoom(roomId: number, userSocketId: string): Result {
+        console.log("enterRoom", roomId, userSocketId);
         // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
         let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId); // 0번째 유저인가?
         let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
@@ -75,6 +78,8 @@ class Store {
     }
 
     public matchingCancel(userSocketId: string) {
+        console.log("matchingCancel", userSocketId);
+
         let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId);
         if (roomIndex === -1)
             roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
@@ -91,6 +96,7 @@ class Store {
     }
 
     public gameOverByUnexpectedExit(loserSocketId: string): Result { // 유저가 나가서 게임 종료
+        console.log("gameOverByUnexpectedExit", loserSocketId);
         let roomIndex = this.getUsersRoomId(loserSocketId);
 
         if (roomIndex == -1) // 없는 방일경우
