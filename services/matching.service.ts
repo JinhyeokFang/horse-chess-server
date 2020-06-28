@@ -13,14 +13,14 @@ class MatchingService {
         if (store.roomDataList.length == 0 || store.roomDataList[store.roomDataList.length - 1].users.length == 2 || store.roomDataList[store.roomDataList.length - 1].gameStatus !== GameStatus.Waiting) { // 방이 없거나 꽉차있는 경우
             let result: Result = store.createRoom(userSocketId); // 새 방을 생성해 입장
             if (result.success) {
-                return { success: true, data: { roomId: result.data.roomId } };
+                return { success: true, data: { roomId: result.data.roomId, room: store.getRoom(result.data.roomId) } };
             } else {
                 return { success: false, err: result.err };
             }
         } else if (store.roomDataList[store.roomDataList.length - 1].users.length == 1) { // 방에 한 명이 이미 들어온 경우
             let result: Result = store.enterRoom(store.roomDataList.length - 1, userSocketId);
             if (result.success) {
-                return { success: true, data: { roomId: result.data.roomId } };
+                return { success: true, data: { roomId: result.data.roomId, room: store.getRoom(result.data.roomId) } };
             } else {
                 return { success: false, err: result.err };
             }

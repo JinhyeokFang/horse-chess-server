@@ -4,7 +4,7 @@ import Result from '../types/result.interface';
 class MatchingController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
         socket.on("getRoomRequest", (data): void => this.getRoom(data, socket));
-        socket.on("enterRoomRequest", (data): void => this.enterRoom(data, socket));
+        socket.on("enterRoomRequest", (data): void => this.enterRoom(data, messageSender, socket));
         socket.on("matchingCancelRequest", (data): void => this.matchingCancel(data, socket));
     }
 
@@ -12,9 +12,14 @@ class MatchingController {
         socket.emit("getRoomResponse", { success: true, data: {roomList: matchingService.getRoomList()} });
     }
 
-    public enterRoom(data, socket): void {
+    public enterRoom(data, messageSender, socket): void {
         let result: Result = matchingService.enterRoom(socket.id);
         socket.emit("enterRoomResponse", result);
+        if (result.success && result.data.room.users.length == 2) {
+            let userData = result.data.room.users;
+            messageSender(userData[0].userSocketId, "matchingSuccess", {});
+            messageSender(userData[1].userSocketId, "matchingSuccess", {});
+        }
     }
 
     public matchingCancel(data, socket): void {
