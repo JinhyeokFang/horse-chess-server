@@ -251,11 +251,9 @@ class Store {
 
         if (this.roomDataList[roomIndex].users[this.roomDataList[roomIndex].blackDataIndex].userSocketId == userSocketId) { // 0번째 유저일 경우
             return BoxStatus.Black;
-        } else if (this.roomDataList[roomIndex].users[1-this.roomDataList[roomIndex].blackDataIndex].userSocketId == userSocketId) { // 1번째일 경우
-            return BoxStatus.White;
-        } else {
-            return BoxStatus.Blank;
-        }
+        } // 1번째일 경우
+
+        return BoxStatus.White;
     }
 
     public findBoxes(position: Position): Position[] {
