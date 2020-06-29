@@ -67,11 +67,11 @@ class Store {
 
         let roomId = this.roomDataList.length;
         // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
-        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId); // 0번째 유저인가?
-        let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
+        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0] !== undefined && room.users[0].userSocketId == userSocketId); // 0번째 유저인가?
+        let userData = this.userDataList.find((user): boolean => user.userSocketId === userSocketId); // 유저 정보 불러오기
 
         if (roomIndex == -1)
-            roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
+            roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId === userSocketId); // 1번째 유저인가?
         else
             return { success: false, err: "이미 유저가 방에 접속해있습니다" };
         if (roomIndex != -1) // 이미 유저가 방에 접속한경우
