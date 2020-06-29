@@ -10,6 +10,7 @@ interface RoomData {
     whiteIsReady: boolean;
     turn: BoxStatus;
     blackDataIndex: number;
+    timeLimits: Date | null;
 };
 
 export default RoomData;

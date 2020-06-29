@@ -37,7 +37,7 @@ class GameSystemService {
                 }
             }
             store.setReady(color, roomId); // 준비된 상태로 변경
-            return { success: true };
+            return { success: true, data: { inGame: store.setReady(color, roomId) }  };
         } else if (color == BoxStatus.White) {
             for (let horse of horses) {
                 if (horse.y >= 4) { // 배치 범위를 벗어나면
@@ -55,6 +55,12 @@ class GameSystemService {
         } else { // 색깔이 흰색, 검은색 모두 아닐경우
             return { success: false, err: "잘못된 플레이어 색깔입니다" };
         }
+    }
+
+    public setTimeLimits(roomId: number, time: Date): void {
+        let store = Store.getInstance();
+        console.log(time.getUTCDate());
+        store.setTimeLimits(roomId, time);
     }
 }
 

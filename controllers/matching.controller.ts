@@ -1,5 +1,7 @@
 import matchingService from '../services/matching.service'
+import authService from '../services/auth.service'
 import Result from '../types/result.interface';
+import gamesystemService from '../services/gamesystem.service';
 
 class MatchingController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
@@ -17,8 +19,16 @@ class MatchingController {
         socket.emit("enterRoomResponse", result);
         if (result.success && result.data.room.users.length == 2) {
             let userData = result.data.room.users;
-            messageSender(userData[0].userSocketId, "matchingSuccess", { data: {first: result.data.room.blackDataIndex == 0} });
-            messageSender(userData[1].userSocketId, "matchingSuccess", { data: {first: result.data.room.blackDataIndex == 1} });
+            authService.getUserData(result.data.room.users[0].username, (firstResult): void => {
+                authService.getUserData(result.data.room.users[1].username, (secondResult): void => {
+                    gamesystemService.setTimeLimits(result.data.roomId, new Date(new Date().getTime() + 2 * 60 * 1000));
+
+                    messageSender(userData[0].userSocketId, "matchingSuccess", { data: {first: result.data.room.blackDataIndex == 1},
+                        users: [firstResult.data.userData, secondResult.data.userData], room: result.data.room });
+                    messageSender(userData[1].userSocketId, "matchingSuccess", { data: {first: result.data.room.blackDataIndex == 0},
+                        users: [firstResult.data.userData, secondResult.data.userData], room: result.data.room });
+                });
+            });
         }
     }   
 

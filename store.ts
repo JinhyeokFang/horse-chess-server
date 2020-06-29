@@ -9,8 +9,38 @@ import RoomData from "./types/roomdata.interface";
 class Store {
     private static instance: Store;
     private userDataList: UserData[] = []; // 접속중인 유저 리스트
+    private sender: Function | null = null;
     public roomDataList: RoomData[] = []; // 방 리스트
-    private constructor () {} // 싱글톤이므로 private
+    private constructor () {
+        setInterval((): void => {
+            if (this.sender !== null)
+                this.checkTimeOut(this.sender)
+        }, 1000);
+    } // 싱글톤이므로 private
+
+    public checkTimeOut(messageSender: Function): void {
+        for (let room of this.roomDataList) {
+            if (room.timeLimits !== null && room.timeLimits < new Date()) {
+                if (room.gameStatus == GameStatus.OnReady) {
+                    if (!room.blackIsReady && !room.whiteIsReady) {
+                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: null}}); 
+                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: null}}); 
+                    } else if (!room.blackIsReady) {
+                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: room.users[1-room.blackDataIndex]}}); 
+                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: room.users[1-room.blackDataIndex]}}); 
+                    } else if (!room.whiteIsReady) {
+                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: room.users[room.blackDataIndex]}}); 
+                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: room.users[room.blackDataIndex]}}); 
+                    }
+                    room.gameStatus = GameStatus.WillBeDeleted;
+                }
+            }
+        }
+    }
+
+    public set messageSender(messageSender: Function) {
+        this.sender = messageSender;
+    }
 
     public connectUser(userSocketId: string): void { // 유저 userDataList에 추가
         this.userDataList.push({userSocketId, username: null});
@@ -55,10 +85,15 @@ class Store {
             gameStatus: GameStatus.Waiting,
             blackIsReady: false,
             whiteIsReady: false,
-            turn: BoxStatus.Black,
-            blackDataIndex: Math.round(Math.random())}); // 게임 진행 상태
+            turn: BoxStatus.White,
+            blackDataIndex: Math.round(Math.random()),
+            timeLimits: null}); // 게임 진행 상태
 
         return { success: true, data: { roomId } };
+    }
+
+    public setTimeLimits(roomId: number, time: Date): void {
+        this.roomDataList[roomId].timeLimits = time;
     }
 
     public enterRoom(roomId: number, userSocketId: string): Result {
@@ -161,6 +196,7 @@ class Store {
         }
         if (this.roomDataList[roomId].blackIsReady && this.roomDataList[roomId].whiteIsReady) {
             this.roomDataList[roomId].gameStatus = GameStatus.InGame;
+            this.roomDataList[roomId].timeLimits = null;
             this.roomDataList[roomId].blackIsReady = false;
             this.roomDataList[roomId].whiteIsReady = false;
 
