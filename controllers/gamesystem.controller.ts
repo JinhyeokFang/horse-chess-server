@@ -25,9 +25,9 @@ class GameSystemController {
             socket.emit("placeResponse", { success: true });
             if (result.data.inGame) {
                 let roomData = gameSystemService.getRoomData(socket.id);
-                messageSender(roomData.data.users[0].userSocketId, "gameStart", { room: result.data });
-                messageSender(roomData.data.users[1].userSocketId, "gameStart", { room: result.data });
-                messageSender(roomData.data.users[1-roomData.data.blackDataIndex].userSocketId, "turnStart", { room: result.data });
+                messageSender(roomData.data.users[0].userSocketId, "turnStart", { room: result.data });
+                messageSender(roomData.data.users[1].userSocketId, "turnStart", { room: result.data });
+                gameSystemService.setTimeLimits(gameSystemService.getRoomId(socket.id), new Date(new Date().getTime() + 60 * 1000));
             }
         } else {
             socket.emit("placeResponse", { success: false, err: result.err });

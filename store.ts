@@ -153,10 +153,14 @@ class Store {
         if (roomIndex == -1) // 없는 방일경우
             return { success: false, err: "방을 찾을 수 없음" }; // 종료
 
+        // 게임을 진행하고 있는 방이 아니라면
         if (this.roomDataList[roomIndex].gameStatus !== GameStatus.InGame 
-            && this.roomDataList[roomIndex].gameStatus !== GameStatus.OnReady) // 게임을 진행하고 있는 방이 아니라면
-            return { success: false, err: "게임을 진행하고있는 방이 아님" }; // 종료
+            && this.roomDataList[roomIndex].gameStatus !== GameStatus.OnReady) {
 
+            this.roomDataList[roomIndex].gameStatus = GameStatus.WillBeDeleted
+            return { success: false, err: "게임을 진행하고있는 방이 아님" }; // 종료
+        }
+        
         let winnerData: UserData | undefined;
         if (this.roomDataList[roomIndex].users[0].userSocketId == loserSocketId) { // 0번째 유저가 나간 사람일 경우
             winnerData = this.userDataList.find((user): boolean => 
@@ -165,6 +169,8 @@ class Store {
             winnerData = this.userDataList.find((user): boolean => 
                 user.userSocketId == this.roomDataList[roomIndex].users[0].userSocketId); // 승리한 유저 데이터 전송
         }
+
+        this.roomDataList[roomIndex].gameStatus = GameStatus.WillBeDeleted
 
         return { success: true, data: {winner: winnerData} };
     }

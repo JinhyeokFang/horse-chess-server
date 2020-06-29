@@ -13,6 +13,11 @@ class GameSystemService {
             return { success: true, data: store.roomDataList[roomId] };
         }
     }
+    
+    public getRoomId(userSocketId: string): number {
+        let store: Store = Store.getInstance();
+        return store.getUsersRoomId(userSocketId);
+    }
 
     public place(userSocketId: string, horses: Position[]): Result {
         let store: Store = Store.getInstance();
