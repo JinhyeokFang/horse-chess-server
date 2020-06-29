@@ -197,14 +197,14 @@ class Store {
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
         let room = this.roomDataList[roomId];
         if (color == BoxStatus.White || color == BoxStatus.Black) { // 말을 배치하려는 경우
-            if (room.chessboard[x][y] == BoxStatus.Forbidden ||
-                color == BoxStatus.White && room.chessboard[x][y] == BoxStatus.Black ||
-                color == BoxStatus.Black && room.chessboard[x][y] == BoxStatus.White) { // 갈 수 없는 타일일 경우
-                return { success: false, err: "갈 수 없는 곳입니다" };
-            } else {
+            // if (room.chessboard[x][y] == BoxStatus.Forbidden ||
+            //     color == BoxStatus.White && room.chessboard[x][y] == BoxStatus.Black ||
+            //     color == BoxStatus.Black && room.chessboard[x][y] == BoxStatus.White) { // 갈 수 없는 타일일 경우
+            //     return { success: false, err: "갈 수 없는 곳입니다" };
+            // } else {
                 room.chessboard[x][y] = color;
                 return { success: true };
-            }
+            // }
         } else if (color == BoxStatus.Forbidden || color == BoxStatus.Blank) { // 말 이외의 타일로 바꾸려는 경우
             room.chessboard[x][y] = color;
             return { success: true };
@@ -249,7 +249,7 @@ class Store {
         if (roomIndex == -1) // 색이 없는 경우
             return BoxStatus.Blank;
 
-        if (this.roomDataList[roomIndex].users[this.roomDataList[roomIndex].blackDataIndex].userSocketId == userSocketId) { // 0번째 유저일 경우
+        if (this.roomDataList[roomIndex].users[this.roomDataList[roomIndex].blackDataIndex].userSocketId === userSocketId) { // 0번째 유저일 경우
             return BoxStatus.Black;
         } // 1번째일 경우
 
