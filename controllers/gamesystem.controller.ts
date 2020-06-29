@@ -30,6 +30,7 @@ class GameSystemController {
             socket.emit("placeResponse", { success: true });
             if (result.data.inGame) {
                 let roomData = gameSystemService.getRoomData(socket.id);
+                console.log(roomData.data.users[0].userSocketId, roomData.data.users[1].userSocketId)
                 messageSender(roomData.data.users[0].userSocketId, "turnStart", { room: result.data });
                 messageSender(roomData.data.users[1].userSocketId, "turnStart", { room: result.data });
                 gameSystemService.setTimeLimits(gameSystemService.getRoomId(socket.id), new Date(new Date().getTime() + 60 * 1000));
@@ -40,7 +41,7 @@ class GameSystemController {
     }
 
     public turnEnd(data, messageSender, socket): void {
-        
+
     }
 
     public proposeExtendTimeLimits(data, messageSender, socket): void {

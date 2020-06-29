@@ -15,7 +15,6 @@ class Store {
         setInterval((): void => {
             if (this.sender !== null)
                 this.checkTimeOut(this.sender)
-            console.dir(this.roomDataList)
         }, 200);
     } // 싱글톤이므로 private
 

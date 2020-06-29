@@ -42,7 +42,7 @@ class GameSystemService {
             return { success: true, data: { inGame: store.setReady(color, roomId) }  };
         } else if (color == BoxStatus.White) {
             for (let horse of horses) {
-                let result: Result= store.setTile(horse.x, horse.y, color, roomId); // 배치 시도
+                let result: Result = store.setTile(horse.x, horse.y, color, roomId); // 배치 시도
                 if (!result.success) { // 배치에 실패하면
                     store.clearChessboard(roomId);
                     return { success: false, err: result.err };
