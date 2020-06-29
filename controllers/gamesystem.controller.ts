@@ -40,7 +40,7 @@ class GameSystemController {
     }
 
     public turnEnd(data, messageSender, socket): void {
-
+        
     }
 
     public proposeExtendTimeLimits(data, messageSender, socket): void {

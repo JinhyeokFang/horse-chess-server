@@ -32,10 +32,6 @@ class GameSystemService {
         if (color == BoxStatus.Black) {
             console.log(horses);
             for (let horse of horses) { // 말 하나씩 배치
-                if (horse.y < 4) { // 배치 범위를 벗어나면
-                    store.clearChessboard(roomId);
-                    return { success: false, err: "잘못된 배치입니다" };
-                }
                 let result: Result = store.setTile(horse.x, horse.y, color, roomId); // 배치 시도
                 if (!result.success) { // 배치에 실패하면
                     store.clearChessboard(roomId);
@@ -46,10 +42,6 @@ class GameSystemService {
             return { success: true, data: { inGame: store.setReady(color, roomId) }  };
         } else if (color == BoxStatus.White) {
             for (let horse of horses) {
-                if (horse.y >= 4) { // 배치 범위를 벗어나면
-                    store.clearChessboard(roomId);
-                    return { success: false, err: "잘못된 배치입니다" };
-                }
                 let result: Result= store.setTile(horse.x, horse.y, color, roomId); // 배치 시도
                 if (!result.success) { // 배치에 실패하면
                     store.clearChessboard(roomId);
