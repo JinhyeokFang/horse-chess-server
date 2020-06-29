@@ -133,6 +133,9 @@ class Store {
             roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
         else if (roomIndex === -1)
             return { success: false, err: "유저가 방에 접속해 있지 않습니다."};
+
+        if (this.roomDataList[roomIndex] === undefined)
+            return { success: false, err: "잘못된 매칭 취소입니다."};
         
         if (this.roomDataList[roomIndex].gameStatus !== GameStatus.Waiting)
             return { success: false, err: "잘못된 매칭 취소입니다."};
