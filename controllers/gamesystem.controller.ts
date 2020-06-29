@@ -6,6 +6,11 @@ class GameSystemController {
         socket.on("getRoomDataRequest", (data): void => this.getRoomData(data, socket));
         socket.on("placeRequest", (data): void => this.place(data, messageSender, socket));
         socket.on("turnEndRequest", (data): void => this.turnEnd(data, messageSender, socket));
+        socket.on("proposeExtendTimeRequest", (data): void => this.proposeExtendTimeLimits(data, messageSender, socket));
+        socket.on("allowExtendTimeRequest", (data): void => this.allowExtendTimeLimits(data, messageSender, socket));
+        socket.on("proposeTurnBackRequest", (data): void => this.proposeTurnBack(data, messageSender, socket));
+        socket.on("allowTurnBackRequest", (data): void => this.allowTurnBack(data, messageSender, socket));
+        socket.on("surrenderRequest", (data): void => this.surrender(data, messageSender, socket));
     }
 
     public getRoomData (data, socket): void {
@@ -35,6 +40,26 @@ class GameSystemController {
     }
 
     public turnEnd(data, messageSender, socket): void {
+
+    }
+
+    public proposeExtendTimeLimits(data, messageSender, socket): void {
+
+    }
+
+    public allowExtendTimeLimits(data, messageSender, socket): void {
+
+    }
+
+    public proposeTurnBack(data, messageSender, socket): void {
+
+    }
+
+    public allowTurnBack(data, messageSender, socket): void {
+
+    }
+
+    public surrender(data, messageSender, socket): void {
 
     }
 }

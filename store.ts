@@ -15,7 +15,8 @@ class Store {
         setInterval((): void => {
             if (this.sender !== null)
                 this.checkTimeOut(this.sender)
-        }, 1000);
+            console.dir(this.roomDataList)
+        }, 200);
     } // 싱글톤이므로 private
 
     public checkTimeOut(messageSender: Function): void {

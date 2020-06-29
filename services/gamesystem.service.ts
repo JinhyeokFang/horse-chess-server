@@ -67,6 +67,10 @@ class GameSystemService {
         console.log(time.getUTCDate());
         store.setTimeLimits(roomId, time);
     }
+
+    public allowExtendTimeLimits(roomId: number, time: Date): void {
+
+    }
 }
 
 export default new GameSystemService();
