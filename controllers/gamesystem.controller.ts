@@ -5,6 +5,7 @@ class GameSystemController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
         socket.on("getRoomDataRequest", (data): void => this.getRoomData(data, socket));
         socket.on("placeRequest", (data): void => this.place(data, messageSender, socket));
+        socket.on("turnEndRequest", (data): void => this.turnEnd(data, messageSender, socket));
     }
 
     public getRoomData (data, socket): void {
@@ -26,10 +27,15 @@ class GameSystemController {
                 let roomData = gameSystemService.getRoomData(socket.id);
                 messageSender(roomData.data.users[0].userSocketId, "gameStart", { room: result.data });
                 messageSender(roomData.data.users[1].userSocketId, "gameStart", { room: result.data });
+                messageSender(roomData.data.users[1-roomData.data.blackDataIndex].userSocketId, "turnStart", { room: result.data });
             }
         } else {
             socket.emit("placeResponse", { success: false, err: result.err });
         }      
+    }
+
+    public turnEnd(data, messageSender, socket): void {
+
     }
 }
 

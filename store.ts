@@ -128,7 +128,7 @@ class Store {
     public matchingCancel(userSocketId: string): Result {
         console.log("matchingCancel", userSocketId);
 
-        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId);
+        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0] !== undefined && room.users[0].userSocketId == userSocketId);
         if (roomIndex === -1)
             roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
         else if (roomIndex === -1)
