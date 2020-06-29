@@ -36,16 +36,27 @@ class Store {
         console.log("createRoom", userSocketId);
 
         let roomId = this.roomDataList.length;
+        // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
+        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId); // 0번째 유저인가?
         let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
+
+        if (roomIndex == -1)
+            roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
+        else
+            return { success: false, err: "이미 유저가 방에 접속해있습니다" };
+        if (roomIndex != -1) // 이미 유저가 방에 접속한경우
+            return { success: false, err: "이미 유저가 방에 접속해있습니다" };
         if (userData === undefined) // 유저 정보가 없으면
             return { success: false, err: "유저 정보가 없습니다" };
+
         this.roomDataList.push({ 
             users: [userData], // 방에 입장한 유저리스트, 최대 2명
             chessboard: new Array(8).fill(new Array(8).fill(BoxStatus.Blank)), // 체스 판
             gameStatus: GameStatus.Waiting,
             blackIsReady: false,
             whiteIsReady: false,
-            turn: BoxStatus.Black}); // 게임 진행 상태
+            turn: BoxStatus.Black,
+            blackDataIndex: Math.round(Math.random())}); // 게임 진행 상태
 
         return { success: true, data: { roomId } };
     }
@@ -55,9 +66,11 @@ class Store {
         // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
         let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId); // 0번째 유저인가?
         let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
-        
-        if (roomIndex != -1)
+
+        if (roomIndex == -1)
             roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
+        else
+            return { success: false, err: "이미 유저가 방에 접속해있습니다" };
         if (roomIndex != -1) // 이미 유저가 방에 접속한경우
             return { success: false, err: "이미 유저가 방에 접속해있습니다" };
         if (userData === undefined) // 유저 정보가 없으면
@@ -77,7 +90,7 @@ class Store {
         }
     }
 
-    public matchingCancel(userSocketId: string) {
+    public matchingCancel(userSocketId: string): Result {
         console.log("matchingCancel", userSocketId);
 
         let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId);
@@ -199,7 +212,7 @@ class Store {
         return boxes;
     }
 
-    public findMoveableBoxes(position: Position, color: BoxStatus, roomId: number, prevPositions: Array<Position>): Set<Position> {
+    public findMoveableBoxes(position: Position, color: BoxStatus, roomId: number, prevPositions: Position[]): Set<Position> {
         let moveableBoxes = new Set<Position>();
         let boxes = this.findBoxes(position);
 
@@ -218,7 +231,7 @@ class Store {
     }
 
     public getUsername(userSocketId: string): string | null {
-        let userdata = this.userDataList.find(user => user.userSocketId == userSocketId);
+        let userdata = this.userDataList.find((user): boolean => user.userSocketId == userSocketId);
         if (userdata == undefined)
             return null;
         else

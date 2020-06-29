@@ -29,7 +29,7 @@ class AuthController {
     }
 
     public logout(data, socket): void {
-        authService.logout(socket.id, (result: Result): void => {
+        authService.logout(socket.id, (): void => {
             socket.emit("logoutResponse", { success: true });
         });
     }

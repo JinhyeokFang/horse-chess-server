@@ -17,10 +17,10 @@ class MatchingController {
         socket.emit("enterRoomResponse", result);
         if (result.success && result.data.room.users.length == 2) {
             let userData = result.data.room.users;
-            messageSender(userData[0].userSocketId, "matchingSuccess", {});
-            messageSender(userData[1].userSocketId, "matchingSuccess", {});
+            messageSender(userData[0].userSocketId, "matchingSuccess", { data: {first: result.data.room.blackDataIndex == 0} });
+            messageSender(userData[1].userSocketId, "matchingSuccess", { data: {first: result.data.room.blackDataIndex == 1} });
         }
-    }
+    }   
 
     public matchingCancel(data, socket): void {
         let result: Result = matchingService.matchingCancel(socket.id);

@@ -24,6 +24,7 @@ class GameSystemService {
             return { success: false, err: "접근할 수 없는 유저입니다" };
 
         if (color == BoxStatus.Black) {
+            console.log(horses);
             for (let horse of horses) { // 말 하나씩 배치
                 if (horse.y < 4) { // 배치 범위를 벗어나면
                     store.clearChessboard(roomId);

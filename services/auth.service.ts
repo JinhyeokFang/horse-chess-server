@@ -67,7 +67,7 @@ class AuthService {
     }
 
     public getUserData(username: string, callback: Function): void {
-        UserModel.findOne({username: encrypt(username)}, (err: object, res: UserModelT) => {
+        UserModel.findOne({username: encrypt(username)}, (err: object, res: UserModelT): void => {
             if (err) {
                 callback({ message: "failed", err });
             } else if (res == null) {
@@ -101,20 +101,20 @@ class AuthService {
         UserModel.findOne({ username: encrypt(friendname) }, (err: object, res: UserModelT): void => {
             if (err) {
                 callback({ message: "failed", err });
-            } else if (res.pendingFriendsList.find(user => user == username) != undefined) {
+            } else if (res.pendingFriendsList.find((user): boolean => user == username) != undefined) {
                 callback({ message: "failed", err: "이미 친구 요청을 보냈습니다." });
-            } else if (res.friendsList.find(user => user == username) != undefined) {
+            } else if (res.friendsList.find((user): boolean => user == username) != undefined) {
                 callback({ message: "failed", err: "이미 친구입니다." });
             } else {
                 UserModel.findOne({ username: encrypt(TSdoesntknowusernameisstring) }, (err: object, res: UserModelT): void => {
                     if (err) {
                         callback({ message: "failed", err });
-                    } else if (res.pendingFriendsList.find(user => user == username) !== undefined) {
-                        UserModel.updateOne({ username: encrypt(TSdoesntknowusernameisstring) }, { $push: { friendsList: friendname }}, err => {
+                    } else if (res.pendingFriendsList.find((user): boolean => user == username) !== undefined) {
+                        UserModel.updateOne({ username: encrypt(TSdoesntknowusernameisstring) }, { $push: { friendsList: friendname }}, (err): any => {
                             if (err) {
                                 callback({ message: "failed", err });
                             } else {
-                                UserModel.updateOne({ username: encrypt(friendname) }, { $push: { friendsList: TSdoesntknowusernameisstring }, $pull: { pendingFriendsList: TSdoesntknowusernameisstring } }, err => {
+                                UserModel.updateOne({ username: encrypt(friendname) }, { $push: { friendsList: TSdoesntknowusernameisstring }, $pull: { pendingFriendsList: TSdoesntknowusernameisstring } }, (err): any => {
                                     if (err) {
                                         callback({ message: "failed", err });
                                     } else {
@@ -124,7 +124,7 @@ class AuthService {
                             }
                         });
                     } else {
-                        UserModel.updateOne({ username: encrypt(friendname) }, { $push: { pendingFriendsList: friendname }}, err => {
+                        UserModel.updateOne({ username: encrypt(friendname) }, { $push: { pendingFriendsList: friendname }}, (err): any => {
                             if (err) {
                                 callback({ message: "failed", err });
                             } else {
@@ -149,16 +149,16 @@ class AuthService {
         UserModel.findOne({ username: encrypt(username) }, (err: object, res: UserModelT): void => {
             if (err) {
                 callback({ message: "failed", err });
-            } else if (res.pendingFriendsList.find(user => user == friendname) == undefined) {
+            } else if (res.pendingFriendsList.find((user): boolean => user == friendname) == undefined) {
                 callback({ message: "failed", err: "친구 요청을 받지 않았습니다." });
-            } else if (res.friendsList.find(user => user == friendname) != undefined) {
+            } else if (res.friendsList.find((user): boolean => user == friendname) != undefined) {
                 callback({ message: "failed", err: "이미 친구입니다." });
             } else {
-                UserModel.updateOne({ username: encrypt(TSdoesntknowusernameisstring) }, { $push: { friendsList: friendname }, $pull: { pendingFriendsList: friendname } }, err => {
+                UserModel.updateOne({ username: encrypt(TSdoesntknowusernameisstring) }, { $push: { friendsList: friendname }, $pull: { pendingFriendsList: friendname } }, (err): any => {
                     if (err) {
                         callback({ message: "failed", err });
                     } else {
-                        UserModel.updateOne({ username: encrypt(friendname) }, { $push: { friendsList: TSdoesntknowusernameisstring }}, err => {
+                        UserModel.updateOne({ username: encrypt(friendname) }, { $push: { friendsList: TSdoesntknowusernameisstring }}, (err): any => {
                             if (err) {
                                 callback({ message: "failed", err });
                             } else {

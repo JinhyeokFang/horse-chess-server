@@ -13,8 +13,13 @@ class GameSystemController {
     }
 
     public place (data, socket): void {
-        let { horses } = data;
-        let result: Result = gameSystemService.place(socket.id, horses);
+        let { firstX, firstY, secondX, secondY, thirdX, thirdY, fourthX, fourthY } = data;
+        let result: Result = gameSystemService.place(socket.id, [
+            { x: parseInt(firstX), y: parseInt(firstY) },
+            { x: parseInt(secondX), y: parseInt(secondY) },
+            { x: parseInt(thirdX), y: parseInt(thirdY) },
+            { x: parseInt(fourthX), y: parseInt(fourthY) }
+        ]);
         if (result.success) {
             socket.emit("placeResponse", { success: true });
         } else {

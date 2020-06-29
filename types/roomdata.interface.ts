@@ -9,6 +9,7 @@ interface RoomData {
     blackIsReady: boolean;
     whiteIsReady: boolean;
     turn: BoxStatus;
+    blackDataIndex: number;
 };
 
 export default RoomData;
