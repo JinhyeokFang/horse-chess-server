@@ -33,6 +33,7 @@ class GameSystemController {
                 console.log(roomData.data.users[0].userSocketId, roomData.data.users[1].userSocketId)
                 messageSender(roomData.data.users[0].userSocketId, "turnStart", { room: result.data });
                 messageSender(roomData.data.users[1].userSocketId, "turnStart", { room: result.data });
+                messageSender(socket.id, "turnStart", { room: result.data });
                 gameSystemService.setTimeLimits(gameSystemService.getRoomId(socket.id), new Date(new Date().getTime() + 60 * 1000));
             }
         } else {
