@@ -153,7 +153,7 @@ class Store {
         
     }
 
-    public setReady(color: BoxStatus, roomId: number): void {
+    public setReady(color: BoxStatus, roomId: number): boolean {
         if (color == BoxStatus.Black) {
             this.roomDataList[roomId].blackIsReady = true;
         } else {
@@ -163,7 +163,11 @@ class Store {
             this.roomDataList[roomId].gameStatus = GameStatus.InGame;
             this.roomDataList[roomId].blackIsReady = false;
             this.roomDataList[roomId].whiteIsReady = false;
+
+            return true;
         }
+
+        return false;
     }
 
     public clearChessboard(roomId: number): void {
