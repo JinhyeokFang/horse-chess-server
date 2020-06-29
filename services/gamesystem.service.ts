@@ -69,7 +69,23 @@ class GameSystemService {
         store.setTimeLimits(roomId, time);
     }
 
-    public allowExtendTimeLimits(roomId: number, time: Date): void {
+    public turnEnd(data, messageSender, socket): void {
+
+    }
+
+    public proposeExtendTimeLimits(data, messageSender, socket): void {
+
+    }
+
+    public allowExtendTimeLimits(data, messageSender, socket): void {
+
+    }
+
+    public proposeTurnBack(data, messageSender, socket): void {
+
+    }
+
+    public allowTurnBack(data, messageSender, socket): void {
 
     }
 
