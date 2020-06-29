@@ -2,6 +2,7 @@ import Store from '../store';
 import { BoxStatus } from '../types/chessboard.enum';
 import Result from '../types/result.interface';
 import Position from '../types/position.interface';
+import { GameStatus } from '../types/room.enum';
 
 class GameSystemService {
     public getRoomData(userSocketId: string): Result {
@@ -70,6 +71,17 @@ class GameSystemService {
 
     public allowExtendTimeLimits(roomId: number, time: Date): void {
 
+    }
+
+    public surrender(userSocketId: string): Result {
+        let store = Store.getInstance();
+        let roomData = this.getRoomData(userSocketId);
+        if (!roomData.success || roomData.data.gameStatus !== GameStatus.InGame) {
+            return { success: false, err: "잘못된 요청입니다." };
+        } else {
+            let result: Result = store.gameOverByUnexpectedExit(userSocketId);
+            return result;
+        }
     }
 }
 

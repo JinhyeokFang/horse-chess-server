@@ -100,7 +100,7 @@ class Store {
     public enterRoom(roomId: number, userSocketId: string): Result {
         console.log("enterRoom", roomId, userSocketId);
         // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
-        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0].userSocketId == userSocketId); // 0번째 유저인가?
+        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0] !== undefined && room.users[0].userSocketId == userSocketId); // 0번째 유저인가?
         let userData = this.userDataList.find((user): boolean => user.userSocketId == userSocketId); // 유저 정보 불러오기
 
         if (roomIndex == -1)

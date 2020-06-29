@@ -60,7 +60,15 @@ class GameSystemController {
     }
 
     public surrender(data, messageSender, socket): void {
+        let result: Result = gameSystemService.surrender(socket.id);
+        
+        if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
+            // 게임이 종료됬다고 전달
+            if (result.data.winner.userSocketId !== undefined)
+                messageSender(result.data.winner.userSocketId, "gameOver", {data: { message: "게임을 포기했습니다", winner: result.data.winner.userSocketId }}); 
 
+            socket.emit("gameOver", {data: { message: "게임을 포기했습니다", winner: result.data.winner.userSocketId }});
+        }
     }
 }
 
