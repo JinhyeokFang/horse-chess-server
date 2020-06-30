@@ -14,6 +14,7 @@ class ConnectionController {
     
     public disconnect(messageSender: Function, socket): void {
         let result: Result = connectionService.disconnect(socket.id);
+        console.log(result.data.winner);
         if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
             // 게임이 종료됬다고 전달
             if (result.data.winner.userSocketId !== undefined) {

@@ -186,9 +186,7 @@ class Store {
             return { success: false, err: "방을 찾을 수 없음" }; // 종료
 
         // 게임을 진행하고 있는 방이 아니라면
-        if (this.roomDataList[roomIndex].gameStatus !== GameStatus.InGame 
-            && this.roomDataList[roomIndex].gameStatus !== GameStatus.OnReady) {
-
+        if (this.roomDataList[roomIndex].gameStatus === GameStatus.Waiting) {
             this.roomDataList[roomIndex].gameStatus = GameStatus.WillBeDeleted
             return { success: false, err: "게임을 진행하고있는 방이 아님" }; // 종료
         }
@@ -248,7 +246,7 @@ class Store {
 
     public getUsersRoomId(userSocketId: string): number { // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
         return this.roomDataList.findIndex((room): boolean =>
-            room.users !== undefined && room.users[0].userSocketId == userSocketId || room.users.length > 1 && room.users[1].userSocketId == userSocketId  && room.gameStatus !== GameStatus.WillBeDeleted);
+            (room.users !== undefined && room.users[0].userSocketId == userSocketId || room.users.length > 1 && room.users[1].userSocketId == userSocketId)  && room.gameStatus !== GameStatus.WillBeDeleted);
     }
 
     public getUsersColor(userSocketId: string): BoxStatus { // 유저의 색깔 찾기, 없으면 Blank 반환
