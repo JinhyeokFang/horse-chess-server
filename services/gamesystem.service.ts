@@ -65,7 +65,7 @@ class GameSystemService {
         if (roomId === -1)
             return { success: false, err: "방에 입장하지 않았습니다" };
 
-        store.setTile(beforeX, beforeY, BoxStatus.Blank, roomId);
+        store.setTile(beforeX, beforeY, BoxStatus.Forbidden, roomId);
         store.setTile(afterX, afterY, color, roomId);
 
         store.changeTurn(roomId);

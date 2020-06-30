@@ -197,10 +197,7 @@ class Store {
     }
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
-        console.log("!!!!")
-        console.dir(this.roomDataList[roomId].chessboard);
         this.roomDataList[roomId].chessboard[x][y] = color;
-        console.dir(this.roomDataList[roomId].chessboard);
         return { success: true };
     }
 
