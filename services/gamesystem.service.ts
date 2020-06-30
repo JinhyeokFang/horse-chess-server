@@ -32,7 +32,6 @@ class GameSystemService {
         if (color == BoxStatus.Black) {
             for (let horse of horses) { // 말 하나씩 배치
                 let result: Result = store.setTile(horse.x, horse.y, BoxStatus.Black, roomId); // 배치 시도
-                console.log(horse.x, horse.y, color);
                 if (!result.success) { // 배치에 실패하면
                     return { success: false, err: result.err };
                 }
@@ -42,7 +41,6 @@ class GameSystemService {
         } else if (color == BoxStatus.White) {
             for (let horse of horses) {
                 let result: Result = store.setTile(horse.x, horse.y, BoxStatus.White, roomId); // 배치
-                console.log(horse.x, horse.y, color);
                 if (!result.success) { // 배치에 실패하면
                     return { success: false, err: result.err };
                 }
@@ -56,7 +54,6 @@ class GameSystemService {
 
     public setTimeLimits(roomId: number, time: Date): void {
         let store = Store.getInstance();
-        console.log(time.getUTCDate());
         store.setTimeLimits(roomId, time);
     }
 

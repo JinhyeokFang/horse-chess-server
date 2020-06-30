@@ -35,7 +35,7 @@ class Store {
                     room.gameStatus = GameStatus.WillBeDeleted;
                 } else if (room.gameStatus == GameStatus.InGame) {
                     if (room.turn == BoxStatus.Black) {
-                        let result: Result = this.gameOverByUnexpectedExit(room.users[room.blackDataIndex].userSocketId);
+                        let result: Result = this.gameOverByUnexpectedExit(room.users[1-room.blackDataIndex].userSocketId);
                         if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
                             // 게임이 종료됬다고 전달
                             if (result.data.winner.userSocketId !== undefined) {
@@ -146,8 +146,6 @@ class Store {
     }
 
     public matchingCancel(userSocketId: string): Result {
-        console.log("matchingCancel", userSocketId);
-
         let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0] !== undefined && room.users[0].userSocketId == userSocketId);
         if (roomIndex === -1)
             roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
@@ -198,18 +196,8 @@ class Store {
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
         let room = this.roomDataList[roomId];
         console.log("setTile", x, y, color);
-        if (color == BoxStatus.White || color == BoxStatus.Black) { // 말을 배치하려는 경우
-            room.chessboard[x][y] = color;
-            return { success: true };
-            // }
-        } else if (color == BoxStatus.Forbidden || color == BoxStatus.Blank) { // 말 이외의 타일로 바꾸려는 경우
-            room.chessboard[x][y] = color;
-            return { success: true };
-        } else if (color == room.chessboard[x][y]) { // 똑같은 색일 경우
-            return { success: false, err: "이미 색이 " + color + "인 타일입니다" };
-        } else { // 잘못 입력
-            return { success: false, err: "잘못된 색입니다" };
-        }
+        room.chessboard[x][y] = color;
+        return { success: true };
         
     }
 
@@ -256,16 +244,13 @@ class Store {
         let roomIndex: number = this.getUsersRoomId(userSocketId);
         let room: RoomData = this.roomDataList[roomIndex];
         
-        console.log("getUsersColor", userSocketId, room.users[room.blackDataIndex].userSocketId);
 
         if (roomIndex == -1) // 색이 없는 경우
             return BoxStatus.Blank;
 
         if (room.users[room.blackDataIndex].userSocketId == userSocketId) { // 0번째 유저일 경우
-            console.log("getUsersColor", "black");
             return BoxStatus.Black;
         } // 1번째일 경우
-        console.log("getUsersColor", "white");
 
         return BoxStatus.White;
     }
