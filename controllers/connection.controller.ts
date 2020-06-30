@@ -18,6 +18,9 @@ class ConnectionController {
         let store: Store = Store.getInstance();
         let result: Result = gamesystemService.surrender(socket.id);
         
+        if (result.data == undefined)
+            return;
+
         if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
             // 게임이 종료됬다고 전달
             authService.updateUserRecord(result.data.winner.username, true, result1 => {
