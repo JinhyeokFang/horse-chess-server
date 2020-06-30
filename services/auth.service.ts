@@ -66,6 +66,26 @@ class AuthService {
         });
     }
 
+    public updateUserRecord(username: string, isWinner: boolean, callback: Function): void {
+        UserModel.findOne({username: encrypt(username)}, (err: object, res: UserModelT): void => {
+            if (err) {
+                callback({ message: "failed", err });
+            } else if (res == null) {
+                callback({ message: "failed", err: "존재하지 않는 유저입니다." });
+            } else {
+                UserModel.updateOne({ username: encrypt(username) }, {
+                    rate: isWinner ? res.rate + 10 : res.rate - 10,
+                    numOfPlayedGame: res.numOfPlayedGame + 1,
+                    numOfWonGame: isWinner ? res.numOfWonGame + 1 : res.numOfWonGame
+                }, (err): any => {
+                    this.getUserData(username, result => {
+                        callback({ message: "complete", data: { userData: result.data.userData }});
+                    })
+                });
+            }
+        }); 
+    }
+
     public getUserData(username: string, callback: Function): void {
         UserModel.findOne({username: encrypt(username)}, (err: object, res: UserModelT): void => {
             if (err) {

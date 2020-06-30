@@ -1,6 +1,8 @@
 import gameSystemService from '../services/gamesystem.service'
 import Result from '../types/result.interface';
 import { GameStatus } from '../types/room.enum';
+import authService from '../services/auth.service';
+import Store from '../store';
 
 class GameSystemController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
@@ -83,26 +85,32 @@ class GameSystemController {
     }
 
     public stalemate(data, messageSender, socket): void {
+        let store: Store = Store.getInstance();
         let result: Result = gameSystemService.surrender(socket.id);
         
         if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
             // 게임이 종료됬다고 전달
-            if (result.data.winner.userSocketId !== undefined)
-                messageSender(result.data.winner.userSocketId, "gameOver", {data: { message: "더 이상 움직일 수 없습니다", winner: result.data.winner.userSocketId }}); 
-
-            socket.emit("gameOver", {data: { message: "더 이상 움직일 수 없습니다", winner: result.data.winner.userSocketId }});
+            authService.updateUserRecord(result.data.winner.username, true, result1 => {
+                authService.updateUserRecord(store.getUsername(socket.id), false, result2 => {
+                    messageSender(result.data.winner.userSocketId, "gameOver", {data: { message: "더 이상 움직일 수 없습니다.", userData: result1.data.userData }}); 
+                    socket.emit("gameOver", {data: { message: "더 이상 움직일 수 없습니다.", userData: result2.data.userData }});
+                });
+            });
         }
     }
 
     public surrender(data, messageSender, socket): void {
+        let store: Store = Store.getInstance();
         let result: Result = gameSystemService.surrender(socket.id);
         
         if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
             // 게임이 종료됬다고 전달
-            if (result.data.winner.userSocketId !== undefined)
-                messageSender(result.data.winner.userSocketId, "gameOver", {data: { message: "게임을 포기했습니다", winner: result.data.winner.userSocketId }}); 
-
-            socket.emit("gameOver", {data: { message: "게임을 포기했습니다", winner: result.data.winner.userSocketId }});
+            authService.updateUserRecord(result.data.winner.username, true, result1 => {
+                authService.updateUserRecord(store.getUsername(socket.id), false, result2 => {
+                    messageSender(result.data.winner.userSocketId, "gameOver", {data: { message: "게임을 포기했습니다", userData: result1.data.userData }}); 
+                    socket.emit("gameOver", {data: { message: "게임을 포기했습니다", userData: result2.data.userData }});
+                });
+            });
         }
     }
 }
