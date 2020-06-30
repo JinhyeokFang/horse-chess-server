@@ -101,7 +101,10 @@ class Store {
 
         this.roomDataList.push({ 
             users: [userData], // 방에 입장한 유저리스트, 최대 2명
-            chessboard: new Array(8).fill(new Array(8).fill(BoxStatus.Blank)), // 체스 판
+            chessboard: [new Array(8).fill(BoxStatus.Blank),new Array(8).fill(BoxStatus.Blank),
+                new Array(8).fill(BoxStatus.Blank),new Array(8).fill(BoxStatus.Blank),
+                new Array(8).fill(BoxStatus.Blank),new Array(8).fill(BoxStatus.Blank),
+                new Array(8).fill(BoxStatus.Blank),new Array(8).fill(BoxStatus.Blank)], // 체스 판
             gameStatus: GameStatus.Waiting,
             blackIsReady: false,
             whiteIsReady: false,
