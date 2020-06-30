@@ -201,8 +201,8 @@ class Store {
             //     color == BoxStatus.Black && room.chessboard[x][y] == BoxStatus.White) { // 갈 수 없는 타일일 경우
             //     return { success: false, err: "갈 수 없는 곳입니다" };
             // } else {
-                room.chessboard[x][y] = color;
-                return { success: true };
+            room.chessboard[x][y] = color;
+            return { success: true };
             // }
         } else if (color == BoxStatus.Forbidden || color == BoxStatus.Blank) { // 말 이외의 타일로 바꾸려는 경우
             room.chessboard[x][y] = color;
@@ -244,13 +244,18 @@ class Store {
 
     public getUsersColor(userSocketId: string): BoxStatus { // 유저의 색깔 찾기, 없으면 Blank 반환
         let roomIndex: number = this.getUsersRoomId(userSocketId);
+        let room: RoomData = this.roomDataList[roomIndex];
         
+        console.log("getUsersColor", userSocketId, room.users[room.blackDataIndex].userSocketId);
+
         if (roomIndex == -1) // 색이 없는 경우
             return BoxStatus.Blank;
 
-        if (this.roomDataList[roomIndex].users[this.roomDataList[roomIndex].blackDataIndex].userSocketId === userSocketId) { // 0번째 유저일 경우
+        if (room.users[room.blackDataIndex].userSocketId == userSocketId) { // 0번째 유저일 경우
+            console.log("getUsersColor", "black");
             return BoxStatus.Black;
         } // 1번째일 경우
+        console.log("getUsersColor", "white");
 
         return BoxStatus.White;
     }

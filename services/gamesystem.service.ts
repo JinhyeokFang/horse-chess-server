@@ -48,7 +48,7 @@ class GameSystemService {
                     return { success: false, err: result.err };
                 }
             }
-            // 준비된 상태로 변경
+            store.setReady(color, roomId); // 준비된 상태로 변경
             return { success: true, data: { inGame: store.setReady(color, roomId) } };
         } else { // 색깔이 흰색, 검은색 모두 아닐경우
             return { success: false, err: "잘못된 플레이어 색깔입니다" };
