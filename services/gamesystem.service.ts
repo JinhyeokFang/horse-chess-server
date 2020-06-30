@@ -34,7 +34,6 @@ class GameSystemService {
                 let result: Result = store.setTile(horse.x, horse.y, BoxStatus.Black, roomId); // 배치 시도
                 console.log(horse.x, horse.y, color);
                 if (!result.success) { // 배치에 실패하면
-                    store.clearChessboard(roomId);
                     return { success: false, err: result.err };
                 }
             }
@@ -45,7 +44,6 @@ class GameSystemService {
                 let result: Result = store.setTile(horse.x, horse.y, BoxStatus.White, roomId); // 배치
                 console.log(horse.x, horse.y, color);
                 if (!result.success) { // 배치에 실패하면
-                    store.clearChessboard(roomId);
                     return { success: false, err: result.err };
                 }
             }
