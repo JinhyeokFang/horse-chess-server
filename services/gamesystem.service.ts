@@ -62,24 +62,36 @@ class GameSystemService {
         store.setTimeLimits(roomId, time);
     }
 
-    public turnEnd(data, messageSender, socket): void {
+    public turnEnd(userSocketId: string, beforeX: number, beforeY: number, afterX: number, afterY: number): Result {
+        let store: Store = Store.getInstance();
+        let roomId: number = store.getUsersRoomId(userSocketId);
+        let color: BoxStatus = store.getUsersColor(userSocketId);
 
+        if (roomId === -1)
+            return { success: false, err: "방에 입장하지 않았습니다" };
+
+        store.setTile(beforeX, beforeY, BoxStatus.Blank, roomId);
+        store.setTile(afterX, afterY, color, roomId);
+
+        store.changeTurn(roomId);
+    
+        return { success: true, data: {room: store.getRoom(roomId)} };
     }
 
-    public proposeExtendTimeLimits(data, messageSender, socket): void {
+    public allowExtendTimeLimits(userSocketId: string): Result {
+        let store: Store = Store.getInstance();
+        let roomId: number = store.getUsersRoomId(userSocketId);
+        store.extendTimeLimits(roomId);
 
+        return { success: true, data: {room: store.getRoom(roomId)} };
     }
 
-    public allowExtendTimeLimits(data, messageSender, socket): void {
+    public allowTurnBack(userSocketId: string): Result {
+        let store: Store = Store.getInstance();
+        let roomId: number = store.getUsersRoomId(userSocketId);
+        store.turnBack(roomId);
 
-    }
-
-    public proposeTurnBack(data, messageSender, socket): void {
-
-    }
-
-    public allowTurnBack(data, messageSender, socket): void {
-
+        return { success: true, data: {room: store.getRoom(roomId)} };
     }
 
     public surrender(userSocketId: string): Result {

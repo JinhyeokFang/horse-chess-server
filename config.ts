@@ -1,5 +1,5 @@
 export default {
-    port: 12345,
+    port: 22222,
     env: "dev",
     db: {
         name: "dbdb"

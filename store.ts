@@ -197,12 +197,8 @@ class Store {
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
         let room = this.roomDataList[roomId];
+        console.log("setTile", x, y, color);
         if (color == BoxStatus.White || color == BoxStatus.Black) { // 말을 배치하려는 경우
-            // if (room.chessboard[x][y] == BoxStatus.Forbidden ||
-            //     color == BoxStatus.White && room.chessboard[x][y] == BoxStatus.Black ||
-            //     color == BoxStatus.Black && room.chessboard[x][y] == BoxStatus.White) { // 갈 수 없는 타일일 경우
-            //     return { success: false, err: "갈 수 없는 곳입니다" };
-            // } else {
             room.chessboard[x][y] = color;
             return { success: true };
             // }
@@ -217,6 +213,23 @@ class Store {
         
     }
 
+    public changeTurn(roomId: number): void {
+        if (this.roomDataList[roomId].turn == BoxStatus.Black) {
+            this.roomDataList[roomId].turn = BoxStatus.White;
+        } else {
+            this.roomDataList[roomId].turn = BoxStatus.Black;
+        }
+        this.roomDataList[roomId].timeLimits = new Date(new Date().getTime() + 60 * 1000);
+    }
+
+    public extendTimeLimits(roomId: number): void {
+        this.roomDataList[roomId].timeLimits = this.roomDataList[roomId].timeLimits === null ? null : new Date(this.roomDataList[roomId].timeLimits.getTime() + 30 * 1000);
+    }
+
+    public turnBack(roomId: number): void {
+
+    }
+
     public setReady(color: BoxStatus, roomId: number): boolean {
         if (color == BoxStatus.Black) {
             this.roomDataList[roomId].blackIsReady = true;
@@ -228,20 +241,15 @@ class Store {
             this.roomDataList[roomId].timeLimits = null;
             this.roomDataList[roomId].blackIsReady = false;
             this.roomDataList[roomId].whiteIsReady = false;
-            console.log("??????")
             return true;
         }
 
         return false;
     }
 
-    public clearChessboard(roomId: number): void {
-        this.roomDataList[roomId].chessboard = new Array(8).fill(new Array(8).fill(BoxStatus.Blank));
-    }
-
     public getUsersRoomId(userSocketId: string): number { // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
         return this.roomDataList.findIndex((room): boolean =>
-            room.users[0].userSocketId == userSocketId || room.users[1].userSocketId == userSocketId);
+            room.users !== undefined && room.users[0].userSocketId == userSocketId || room.users.length > 1 && room.users[1].userSocketId == userSocketId);
     }
 
     public getUsersColor(userSocketId: string): BoxStatus { // 유저의 색깔 찾기, 없으면 Blank 반환
@@ -260,46 +268,6 @@ class Store {
         console.log("getUsersColor", "white");
 
         return BoxStatus.White;
-    }
-
-    public findBoxes(position: Position): Position[] {
-        let boxes: Position[] = [];
-        if (position.x > 1) {
-            boxes.push({x: position.x-2, y: position.y-1});
-            boxes.push({x: position.x-2, y: position.y+1});
-        }
-        if (position.x < 6) {
-            boxes.push({x: position.x+2, y: position.y-1});
-            boxes.push({x: position.x+2, y: position.y+1});
-        }
-        if (position.y > 1) {
-            boxes.push({x: position.x-1, y: position.y-2});
-            boxes.push({x: position.x+1, y: position.y-2});
-        }
-        if (position.y < 6) {
-            boxes.push({x: position.x-1, y: position.y+2});
-            boxes.push({x: position.x+1, y: position.y+2});
-        }
-
-        return boxes;
-    }
-
-    public findMoveableBoxes(position: Position, color: BoxStatus, roomId: number, prevPositions: Position[]): Set<Position> {
-        let moveableBoxes = new Set<Position>();
-        let boxes = this.findBoxes(position);
-
-        prevPositions.push();
-
-        for (let box of boxes) {
-            let boxSt = this.roomDataList[roomId].chessboard[box.x][box.y];
-            if (boxSt == color) {
-                moveableBoxes = new Set([...Array.from(this.findMoveableBoxes(position, color, roomId, prevPositions).values()), ...Array.from(moveableBoxes)]);
-            } else if (boxSt == BoxStatus.Blank) {
-                moveableBoxes.add(box);
-            } 
-        }
-
-        return moveableBoxes;
     }
 
     public getUsername(userSocketId: string): string | null {

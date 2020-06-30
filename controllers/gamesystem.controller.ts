@@ -11,6 +11,7 @@ class GameSystemController {
         socket.on("allowExtendTimeRequest", (data): void => this.allowExtendTimeLimits(data, messageSender, socket));
         socket.on("proposeTurnBackRequest", (data): void => this.proposeTurnBack(data, messageSender, socket));
         socket.on("allowTurnBackRequest", (data): void => this.allowTurnBack(data, messageSender, socket));
+        socket.on("stalemateRequest", (data): void => this.stalemate(data, messageSender, socket));
         socket.on("surrenderRequest", (data): void => this.surrender(data, messageSender, socket));
     }
 
@@ -41,23 +42,56 @@ class GameSystemController {
     }
 
     public turnEnd(data, messageSender, socket): void {
-
+        let { beforeX, beforeY, afterX, afterY } = data;
+        let result: Result = gameSystemService.turnEnd(socket.id, beforeX, beforeY, afterX, afterY);
+        if (result.success) {
+            messageSender(result.data.users[0].userSocketId, "turnStart", {data: result.data});
+            messageSender(result.data.users[1].userSocketId, "turnStart", {data: result.data});
+        } else {
+            console.error("TurnEndError");
+        }
     }
 
     public proposeExtendTimeLimits(data, messageSender, socket): void {
-
+        let result: Result = gameSystemService.getRoomData(socket.id);
+        if (result.success) {
+            messageSender(result.data.users.find((user): boolean => user.userSocketId !== socket.id).userSocketId, "proposeExtendTimeLimits", {});
+        } else {
+            socket.emit("proposeExtendTimeLimitsResponse", { success: false, err: result.err });
+        }
     }
 
     public allowExtendTimeLimits(data, messageSender, socket): void {
-
+        let result: Result = gameSystemService.allowExtendTimeLimits(socket.id);
+        messageSender(result.data.users[0].userSocketId, "updateTimeLimits", { data: result.data });
+        messageSender(result.data.users[1].userSocketId, "updateTimeLimits", { data: result.data });
     }
 
     public proposeTurnBack(data, messageSender, socket): void {
-
+        let result: Result = gameSystemService.getRoomData(socket.id);
+        if (result.success) {
+            messageSender(result.data.users.find((user): boolean => user.userSocketId !== socket.id).userSocketId, "proposeTurnBack", {});
+        } else {
+            socket.emit("proposeTurnBackResponse", { success: false, err: result.err });
+        }
     }
 
     public allowTurnBack(data, messageSender, socket): void {
+        let result: Result = gameSystemService.allowTurnBack(socket.id);
+        messageSender(result.data.users[0].userSocketId, "turnBack", { data: result.data });
+        messageSender(result.data.users[1].userSocketId, "turnBack", { data: result.data });
+    }
 
+    public stalemate(data, messageSender, socket): void {
+        let result: Result = gameSystemService.surrender(socket.id);
+        
+        if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
+            // 게임이 종료됬다고 전달
+            if (result.data.winner.userSocketId !== undefined)
+                messageSender(result.data.winner.userSocketId, "gameOver", {data: { message: "더 이상 움직일 수 없습니다", winner: result.data.winner.userSocketId }}); 
+
+            socket.emit("gameOver", {data: { message: "더 이상 움직일 수 없습니다", winner: result.data.winner.userSocketId }});
+        }
     }
 
     public surrender(data, messageSender, socket): void {
