@@ -45,8 +45,8 @@ class GameSystemController {
         let { beforeX, beforeY, afterX, afterY } = data;
         let result: Result = gameSystemService.turnEnd(socket.id, beforeX, beforeY, afterX, afterY);
         if (result.success) {
-            messageSender(result.data.users[0].userSocketId, "turnStart", {data: result.data});
-            messageSender(result.data.users[1].userSocketId, "turnStart", {data: result.data});
+            messageSender(result.data.room.users[0].userSocketId, "turnStart", {data: result.data});
+            messageSender(result.data.room.users[1].userSocketId, "turnStart", {data: result.data});
         } else {
             console.error("TurnEndError");
         }
