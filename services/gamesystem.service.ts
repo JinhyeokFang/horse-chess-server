@@ -91,13 +91,8 @@ class GameSystemService {
 
     public surrender(userSocketId: string): Result {
         let store = Store.getInstance();
-        let roomData = this.getRoomData(userSocketId);
-        if (!roomData.success || roomData.data.gameStatus !== GameStatus.InGame) {
-            return { success: false, err: "잘못된 요청입니다." };
-        } else {
-            let result: Result = store.gameOverByUnexpectedExit(userSocketId);
-            return result;
-        }
+        let result: Result = store.gameOverByUnexpectedExit(userSocketId);
+        return result;
     }
 }
 
