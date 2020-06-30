@@ -45,6 +45,7 @@ class Store {
                             });
                         }); 
                     }
+                    room.users = [];
                     room.gameStatus = GameStatus.WillBeDeleted;
                 } else if (room.gameStatus == GameStatus.InGame) {
                     if (room.turn == BoxStatus.Black) {
@@ -64,6 +65,8 @@ class Store {
                             });
                         }); 
                     }
+                    room.users = [];
+                    room.gameStatus = GameStatus.WillBeDeleted;
                 }
             }
         }
@@ -189,6 +192,7 @@ class Store {
         if (this.roomDataList[roomIndex].gameStatus !== GameStatus.InGame 
             && this.roomDataList[roomIndex].gameStatus !== GameStatus.OnReady) {
 
+            this.roomDataList[roomIndex].users = [];
             this.roomDataList[roomIndex].gameStatus = GameStatus.WillBeDeleted
             return { success: false, err: "게임을 진행하고있는 방이 아님" }; // 종료
         }
@@ -202,6 +206,7 @@ class Store {
                 user.userSocketId == this.roomDataList[roomIndex].users[0].userSocketId); // 승리한 유저 데이터 전송
         }
 
+        this.roomDataList[roomIndex].users = [];
         this.roomDataList[roomIndex].gameStatus = GameStatus.WillBeDeleted
 
         return { success: true, data: {winner: winnerData} };
