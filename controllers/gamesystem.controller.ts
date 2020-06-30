@@ -33,8 +33,8 @@ class GameSystemController {
             if (result.data.gameStatus == GameStatus.InGame) {
                 let roomData = gameSystemService.getRoomData(socket.id);
                 gameSystemService.setTimeLimits(gameSystemService.getRoomId(socket.id), new Date(new Date().getTime() + 60 * 1000));
-                messageSender(roomData.data.users[0].userSocketId, "turnStart", { data: result.data });
-                messageSender(roomData.data.users[1].userSocketId, "turnStart", { data: result.data });
+                messageSender(roomData.data.users[0].userSocketId, "turnStart", { data: roomData });
+                messageSender(roomData.data.users[1].userSocketId, "turnStart", { data: roomData });
             }
         } else {
             socket.emit("placeResponse", { success: false, err: result.err });
@@ -45,8 +45,8 @@ class GameSystemController {
         let { beforeX, beforeY, afterX, afterY } = data;
         let result: Result = gameSystemService.turnEnd(socket.id, beforeX, beforeY, afterX, afterY);
         if (result.success) {
-            messageSender(result.data.room.users[0].userSocketId, "turnStart", { data: result.data });
-            messageSender(result.data.room.users[1].userSocketId, "turnStart", { data: result.data });
+            messageSender(result.data.room.users[0].userSocketId, "turnStart", { data: result.data.room });
+            messageSender(result.data.room.users[1].userSocketId, "turnStart", { data: result.data.room });
         } else {
             console.error("TurnEndError");
         }
