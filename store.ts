@@ -194,11 +194,9 @@ class Store {
     }
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
-        let room = this.roomDataList[roomId];
         console.log("setTile", x, y, color);
-        room.chessboard[x][y] = color;
+        this.roomDataList[roomId].chessboard[x][y] = color;
         return { success: true };
-        
     }
 
     public changeTurn(roomId: number): void {
