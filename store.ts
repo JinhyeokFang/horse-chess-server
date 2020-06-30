@@ -23,14 +23,14 @@ class Store {
             if (room.timeLimits !== null && room.timeLimits < new Date()) {
                 if (room.gameStatus == GameStatus.OnReady) {
                     if (!room.blackIsReady && !room.whiteIsReady) {
-                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: null}}); 
-                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: null}}); 
+                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", winner: null}}); 
+                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", winner: null}}); 
                     } else if (!room.blackIsReady) {
-                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: room.users[1-room.blackDataIndex]}}); 
-                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: room.users[1-room.blackDataIndex]}}); 
+                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", winner: room.users[1-room.blackDataIndex]}}); 
+                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", winner: room.users[1-room.blackDataIndex]}}); 
                     } else if (!room.whiteIsReady) {
-                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: room.users[room.blackDataIndex]}}); 
-                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다.", winner: room.users[room.blackDataIndex]}}); 
+                        messageSender(room.users[0].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", winner: room.users[room.blackDataIndex]}}); 
+                        messageSender(room.users[1].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", winner: room.users[room.blackDataIndex]}}); 
                     }
                     room.gameStatus = GameStatus.WillBeDeleted;
                 } else if (room.gameStatus == GameStatus.InGame) {
@@ -38,18 +38,20 @@ class Store {
                         let result: Result = this.gameOverByUnexpectedExit(room.users[room.blackDataIndex].userSocketId);
                         if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
                             // 게임이 종료됬다고 전달
-                            if (result.data.winner.userSocketId !== undefined)
-                                messageSender(result.data.winner.userSocketId, "gameOver", {data: { message: "상대방이 나갔습니다", winner: result.data.winner.userSocketId }}); 
+                            if (result.data.winner.userSocketId !== undefined) {
+                                messageSender(room.users[1 - room.blackDataIndex].userSocketId, "gameOver", {data: { message: "제한시간을 초과했습니다", winner: result.data.winner.userSocketId }});
+                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "제한시간을 초과했습니다", winner: result.data.winner.userSocketId }});
+                            }
                         }
-                        messageSender(room.users[1 - room.blackDataIndex].userSocketId, "gameOver", {data: { message: "상대방이 나갔습니다", winner: result.data.winner.userSocketId }});
                     } else {
                         let result: Result = this.gameOverByUnexpectedExit(room.users[room.blackDataIndex].userSocketId);
                         if (result.data.winner !== null && result.data.winner !== undefined) { // 만약 유저가 방을 나가 승리한 사람이 있다면
                             // 게임이 종료됬다고 전달
-                            if (result.data.winner.userSocketId !== undefined)
-                                messageSender(result.data.winner.userSocketId, "gameOver", {data: { message: "상대방이 나갔습니다", winner: result.data.winner.userSocketId }}); 
+                            if (result.data.winner.userSocketId !== undefined) {
+                                messageSender(room.users[1 - room.blackDataIndex].userSocketId, "gameOver", {data: { message: "제한시간을 초과했습니다", winner: result.data.winner.userSocketId }});
+                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "제한시간을 초과했습니다", winner: result.data.winner.userSocketId }});
+                            }
                         }
-                        messageSender(room.users[1 - room.blackDataIndex].userSocketId, "gameOver", {data: { message: "상대방이 나갔습니다", winner: result.data.winner.userSocketId }});
                     }
                 }
             }
@@ -226,7 +228,7 @@ class Store {
             this.roomDataList[roomId].timeLimits = null;
             this.roomDataList[roomId].blackIsReady = false;
             this.roomDataList[roomId].whiteIsReady = false;
-
+            console.log("??????")
             return true;
         }
 

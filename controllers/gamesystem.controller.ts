@@ -1,5 +1,6 @@
 import gameSystemService from '../services/gamesystem.service'
 import Result from '../types/result.interface';
+import { GameStatus } from '../types/room.enum';
 
 class GameSystemController {
     public constructor (messageSender, socket) { // 메세지 입력받을 라우터 등록
@@ -28,12 +29,11 @@ class GameSystemController {
         ]);
         if (result.success) {
             socket.emit("placeResponse", { success: true });
-            if (result.data.inGame) {
+            if (result.data.gameStatus == GameStatus.InGame) {
                 let roomData = gameSystemService.getRoomData(socket.id);
-                console.log(roomData.data.users[0].userSocketId, roomData.data.users[1].userSocketId)
+                gameSystemService.setTimeLimits(gameSystemService.getRoomId(socket.id), new Date(new Date().getTime() + 60 * 1000));
                 messageSender(roomData.data.users[0].userSocketId, "turnStart", { room: result.data });
                 messageSender(roomData.data.users[1].userSocketId, "turnStart", { room: result.data });
-                gameSystemService.setTimeLimits(gameSystemService.getRoomId(socket.id), new Date(new Date().getTime() + 60 * 1000));
             }
         } else {
             socket.emit("placeResponse", { success: false, err: result.err });

@@ -30,26 +30,27 @@ class GameSystemService {
             return { success: false, err: "접근할 수 없는 유저입니다" };
 
         if (color == BoxStatus.Black) {
-            console.log(horses);
             for (let horse of horses) { // 말 하나씩 배치
-                let result: Result = store.setTile(horse.x, horse.y, color, roomId); // 배치 시도
+                let result: Result = store.setTile(horse.x, horse.y, BoxStatus.Black, roomId); // 배치 시도
+                console.log(horse.x, horse.y, color);
                 if (!result.success) { // 배치에 실패하면
                     store.clearChessboard(roomId);
                     return { success: false, err: result.err };
                 }
             }
-            store.setReady(color, roomId); // 준비된 상태로 변경
-            return { success: true, data: { inGame: store.setReady(color, roomId) }  };
+            store.setReady(color, roomId);
+            return { success: true, data: store.getRoom(store.getUsersRoomId(userSocketId)) };
         } else if (color == BoxStatus.White) {
             for (let horse of horses) {
-                let result: Result = store.setTile(horse.x, horse.y, color, roomId); // 배치 시도
+                let result: Result = store.setTile(horse.x, horse.y, BoxStatus.White, roomId); // 배치
+                console.log(horse.x, horse.y, color);
                 if (!result.success) { // 배치에 실패하면
                     store.clearChessboard(roomId);
                     return { success: false, err: result.err };
                 }
             }
-            store.setReady(color, roomId); // 준비된 상태로 변경
-            return { success: true, data: { inGame: store.setReady(color, roomId) } };
+            store.setReady(color, roomId);
+            return { success: true, data: store.getRoom(store.getUsersRoomId(userSocketId)) };
         } else { // 색깔이 흰색, 검은색 모두 아닐경우
             return { success: false, err: "잘못된 플레이어 색깔입니다" };
         }
