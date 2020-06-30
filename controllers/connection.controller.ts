@@ -18,7 +18,7 @@ class ConnectionController {
             // 게임이 종료됬다고 전달
             if (result.data.winner.userSocketId !== undefined) {
                 authService.updateUserRecord(result.data.winner.username, true, result => {
-                    messageSender(result.result.data.userData.userSocketId, "gameOver", {data: { message: "상대방이 나갔습니다.", userData: result.data.userData }}); 
+                    messageSender(result.data.userData.userSocketId, "gameOver", {data: { message: "상대방이 나갔습니다.", userData: result.data.userData }}); 
                 });
             }
         }
