@@ -33,8 +33,8 @@ class GameSystemController {
             if (result.data.gameStatus == GameStatus.InGame) {
                 let roomData = gameSystemService.getRoomData(socket.id);
                 gameSystemService.setTimeLimits(gameSystemService.getRoomId(socket.id), new Date(new Date().getTime() + 60 * 1000));
-                messageSender(roomData.data.users[0].userSocketId, "turnStart", { data: roomData });
-                messageSender(roomData.data.users[1].userSocketId, "turnStart", { data: roomData });
+                messageSender(roomData.data.users[0].userSocketId, "turnStart", { data: roomData.data });
+                messageSender(roomData.data.users[1].userSocketId, "turnStart", { data: roomData.data });
             }
         } else {
             socket.emit("placeResponse", { success: false, err: result.err });
