@@ -197,7 +197,6 @@ class Store {
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
         let room = this.roomDataList[roomId];
-        console.dir("beforeSetTile", this.roomDataList[roomId].chessboard);
         console.log("setTile", x, y, color);
         if (color == BoxStatus.White || color == BoxStatus.Black) { // 말을 배치하려는 경우
             room.chessboard[x][y] = color;
