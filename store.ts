@@ -161,9 +161,9 @@ class Store {
     }
 
     public matchingCancel(userSocketId: string): Result {
-        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0] !== undefined && room.users[0].userSocketId == userSocketId);
+        let roomIndex: number = this.roomDataList.findIndex((room): boolean => room.users[0] !== undefined && room.users[0].userSocketId == userSocketId && room.gameStatus !== GameStatus.WillBeDeleted);
         if (roomIndex === -1)
-            roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId); // 1번째 유저인가?
+            roomIndex = this.roomDataList.findIndex((room): boolean => room.users.length > 1 && room.users[1].userSocketId == userSocketId && room.gameStatus !== GameStatus.WillBeDeleted); // 1번째 유저인가?
         else if (roomIndex === -1)
             return { success: false, err: "유저가 방에 접속해 있지 않습니다."};
 
@@ -202,7 +202,7 @@ class Store {
                 user.userSocketId == this.roomDataList[roomIndex].users[0].userSocketId); // 승리한 유저 데이터 전송
         }
 
-        this.roomDataList[roomIndex].gameStatus = GameStatus.WillBeDeleted
+        this.roomDataList[roomIndex].gameStatus = GameStatus.WillBeDeleted;
 
         return { success: true, data: {winner: winnerData} };
     }
@@ -248,7 +248,7 @@ class Store {
 
     public getUsersRoomId(userSocketId: string): number { // 유저가 들어가있던 방 인덱스 찾기, 없으면 -1 반환
         return this.roomDataList.findIndex((room): boolean =>
-            room.users !== undefined && room.users[0].userSocketId == userSocketId || room.users.length > 1 && room.users[1].userSocketId == userSocketId);
+            room.users !== undefined && room.users[0].userSocketId == userSocketId || room.users.length > 1 && room.users[1].userSocketId == userSocketId  && room.gameStatus !== GameStatus.WillBeDeleted);
     }
 
     public getUsersColor(userSocketId: string): BoxStatus { // 유저의 색깔 찾기, 없으면 Blank 반환
