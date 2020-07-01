@@ -208,8 +208,8 @@ class Store {
     }
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
-        this.roomDataList[roomId].chessboardTempTwo = new Array(...this.roomDataList[roomId].chessboardTempOne);
-        this.roomDataList[roomId].chessboardTempOne = new Array(...this.roomDataList[roomId].chessboard);
+        this.roomDataList[roomId].chessboardTempTwo = this.roomDataList[roomId].chessboardTempOne.slice();
+        this.roomDataList[roomId].chessboardTempOne = this.roomDataList[roomId].chessboard.slice();
         this.roomDataList[roomId].chessboard[x][y] = color;
         return { success: true };
     }
