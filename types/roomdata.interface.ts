@@ -5,6 +5,8 @@ import UserData from "./userdata.interface";
 interface RoomData {
     users: UserData[];
     chessboard: BoxStatus[][];
+    chessboardTempOne: BoxStatus[][] | null;
+    chessboardTempTwo: BoxStatus[][] | null;
     gameStatus: GameStatus;
     blackIsReady: boolean;
     whiteIsReady: boolean;

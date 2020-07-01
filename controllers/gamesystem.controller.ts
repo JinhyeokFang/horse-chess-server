@@ -35,8 +35,8 @@ class GameSystemController {
             if (result.data.gameStatus == GameStatus.InGame) {
                 let roomData = gameSystemService.getRoomData(socket.id);
                 gameSystemService.setTimeLimits(gameSystemService.getRoomId(socket.id), new Date(new Date().getTime() + 60 * 1000));
-                messageSender(roomData.data.users[0].userSocketId, "turnStart", { data: roomData.data });
-                messageSender(roomData.data.users[1].userSocketId, "turnStart", { data: roomData.data });
+                messageSender(roomData.data.users[0].userSocketId, "turnStart", { data: roomData.data, turnBack: false });
+                messageSender(roomData.data.users[1].userSocketId, "turnStart", { data: roomData.data, turnBack: false });
             }
         } else {
             socket.emit("placeResponse", { success: false, err: result.err });
@@ -47,8 +47,8 @@ class GameSystemController {
         let { beforeX, beforeY, afterX, afterY } = data;
         let result: Result = gameSystemService.turnEnd(socket.id, beforeX, beforeY, afterX, afterY);
         if (result.success) {
-            messageSender(result.data.room.users[0].userSocketId, "turnStart", { data: result.data.room });
-            messageSender(result.data.room.users[1].userSocketId, "turnStart", { data: result.data.room });
+            messageSender(result.data.room.users[0].userSocketId, "turnStart", { data: result.data.room, turnBack: false });
+            messageSender(result.data.room.users[1].userSocketId, "turnStart", { data: result.data.room, turnBack: false });
         } else {
             console.error("TurnEndError");
         }
@@ -80,8 +80,8 @@ class GameSystemController {
 
     public allowTurnBack(data, messageSender, socket): void {
         let result: Result = gameSystemService.allowTurnBack(socket.id);
-        messageSender(result.data.users[0].userSocketId, "turnBack", { data: result.data });
-        messageSender(result.data.users[1].userSocketId, "turnBack", { data: result.data });
+        messageSender(result.data.users[0].userSocketId, "turnStart", { data: result.data.room, turnBack: true });
+        messageSender(result.data.users[1].userSocketId, "turnStart", { data: result.data.room, turnBack: true });
     }
 
     public stalemate(data, messageSender, socket): void {

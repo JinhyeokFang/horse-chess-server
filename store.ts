@@ -117,6 +117,8 @@ class Store {
                 new Array(8).fill(BoxStatus.Blank),new Array(8).fill(BoxStatus.Blank),
                 new Array(8).fill(BoxStatus.Blank),new Array(8).fill(BoxStatus.Blank),
                 new Array(8).fill(BoxStatus.Blank),new Array(8).fill(BoxStatus.Blank)], // 체스 판
+            chessboardTempOne: null,
+            chessboardTempTwo: null,
             gameStatus: GameStatus.Waiting,
             blackIsReady: false,
             whiteIsReady: false,
@@ -206,6 +208,8 @@ class Store {
     }
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
+        this.roomDataList[roomId].chessboardTempTwo = new Array(...this.roomDataList[roomId].chessboardTempOne);
+        this.roomDataList[roomId].chessboardTempOne = new Array(...this.roomDataList[roomId].chessboard);
         this.roomDataList[roomId].chessboard[x][y] = color;
         return { success: true };
     }
@@ -224,7 +228,13 @@ class Store {
     }
 
     public turnBack(roomId: number): void {
+        if (this.roomDataList[roomId].chessboardTempTwo !== null) {
+            this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboardTempTwo
+            this.roomDataList[roomId].chessboardTempOne = null;
+            this.roomDataList[roomId].chessboardTempTwo = null;
+        } else {
 
+        }
     }
 
     public setReady(color: BoxStatus, roomId: number): boolean {
