@@ -34,14 +34,14 @@ class Store {
                         authService.updateUserRecord(this.getUsername(room.users[1-room.blackDataIndex].userSocketId), true, result1 => {
                             authService.updateUserRecord(this.getUsername(room.users[room.blackDataIndex].userSocketId), false, result2 => {
                                 messageSender(room.users[1-room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result1.data.userData}}); 
-                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result1.data.userData}});
+                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result2.data.userData}});
                             });
                         }); 
                     } else if (!room.whiteIsReady) {
                         authService.updateUserRecord(this.getUsername(room.users[1-room.blackDataIndex].userSocketId), false, result1 => {
                             authService.updateUserRecord(this.getUsername(room.users[room.blackDataIndex].userSocketId), true, result2 => {
                                 messageSender(room.users[1-room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result1.data.userData}}); 
-                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result1.data.userData}});
+                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result2.data.userData}});
                             });
                         }); 
                     }
@@ -52,7 +52,7 @@ class Store {
                         authService.updateUserRecord(this.getUsername(room.users[1-room.blackDataIndex].userSocketId), true, result1 => {
                             authService.updateUserRecord(this.getUsername(room.users[room.blackDataIndex].userSocketId), false, result2 => {
                                 messageSender(room.users[1-room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result1.data.userData}}); 
-                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result1.data.userData}});
+                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result2.data.userData}});
                             });
                         }); 
                     } else {
@@ -60,7 +60,7 @@ class Store {
                         authService.updateUserRecord(this.getUsername(room.users[1-room.blackDataIndex].userSocketId), false, result1 => {
                             authService.updateUserRecord(this.getUsername(room.users[room.blackDataIndex].userSocketId), true, result2 => {
                                 messageSender(room.users[1-room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result1.data.userData}}); 
-                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result1.data.userData}});
+                                messageSender(room.users[room.blackDataIndex].userSocketId, "gameOver", {data: { message: "시간내에 배치하지 못했습니다", userData: result2.data.userData}});
                             });
                         }); 
                     }

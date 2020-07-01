@@ -11,6 +11,7 @@ class ConnectionService {
     public disconnect(userSocketId: string): Result {
         let store: Store = Store.getInstance();
         store.disconnectUser(userSocketId);
+        return { success: true };
     }
 }
 
