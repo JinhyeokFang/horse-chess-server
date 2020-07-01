@@ -73,6 +73,7 @@ class AuthService {
             } else if (res == null) {
                 callback({ message: "failed", err: "존재하지 않는 유저입니다." });
             } else {
+                console.log(username, isWinner, isWinner ? 10 : -10)
                 UserModel.updateOne({ username: encrypt(username) }, {
                     rate: isWinner ? res.rate + 10 : res.rate - 10,
                     numOfPlayedGame: res.numOfPlayedGame + 1,

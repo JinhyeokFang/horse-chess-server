@@ -208,8 +208,10 @@ class Store {
     }
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
-        this.roomDataList[roomId].chessboardTempTwo = this.roomDataList[roomId].chessboardTempOne.slice();
-        this.roomDataList[roomId].chessboardTempOne = this.roomDataList[roomId].chessboard.slice();
+        if (this.roomDataList[roomId].chessboardTempOne !== null)
+            this.roomDataList[roomId].chessboardTempTwo = this.roomDataList[roomId].chessboardTempOne.map(arr => arr.slice());
+        this.roomDataList[roomId].chessboardTempOne = this.roomDataList[roomId].chessboard.map(arr => arr.slice());
+        this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboard.map(arr => arr.slice());
         this.roomDataList[roomId].chessboard[x][y] = color;
         return { success: true };
     }
@@ -229,11 +231,10 @@ class Store {
 
     public turnBack(roomId: number): void {
         if (this.roomDataList[roomId].chessboardTempTwo !== null) {
-            this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboardTempTwo
+            this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboardTempTwo.map(arr => arr.slice())
             this.roomDataList[roomId].chessboardTempOne = null;
             this.roomDataList[roomId].chessboardTempTwo = null;
-        } else {
-
+            this.roomDataList[roomId].timeLimits =  new Date(this.roomDataList[roomId].timeLimits.getTime() + 60 * 1000);
         }
     }
 
