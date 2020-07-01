@@ -208,11 +208,19 @@ class Store {
     }
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
+        console.log("before");
+        console.dir(this.roomDataList[roomId].chessboard);
+        console.dir(this.roomDataList[roomId].chessboardTempOne);
+        console.dir(this.roomDataList[roomId].chessboardTempTwo);
         if (this.roomDataList[roomId].chessboardTempOne !== null)
-            this.roomDataList[roomId].chessboardTempTwo = this.roomDataList[roomId].chessboardTempOne.map(arr => arr.slice());
-        this.roomDataList[roomId].chessboardTempOne = this.roomDataList[roomId].chessboard.map(arr => arr.slice());
-        this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboard.map(arr => arr.slice());
+            this.roomDataList[roomId].chessboardTempTwo = this.roomDataList[roomId].chessboardTempOne.map(arr => [...arr]);
+        this.roomDataList[roomId].chessboardTempOne = this.roomDataList[roomId].chessboard.map(arr => [...arr]);
+        this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboard.map(arr => [...arr]);
         this.roomDataList[roomId].chessboard[x][y] = color;
+        console.log("after");
+        console.dir(this.roomDataList[roomId].chessboard);
+        console.dir(this.roomDataList[roomId].chessboardTempOne);
+        console.dir(this.roomDataList[roomId].chessboardTempTwo);
         return { success: true };
     }
 
