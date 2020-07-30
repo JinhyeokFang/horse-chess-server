@@ -119,6 +119,8 @@ class Store {
                 new Array(8).fill(BoxStatus.Blank),new Array(8).fill(BoxStatus.Blank)], // 체스 판
             chessboardTempOne: null,
             chessboardTempTwo: null,
+            chessboardTempThree: null,
+            chessboardTempFour: null,
             gameStatus: GameStatus.Waiting,
             blackIsReady: false,
             whiteIsReady: false,
@@ -208,19 +210,15 @@ class Store {
     }
 
     public setTile(x: number, y: number, color: BoxStatus, roomId: number): Result {
-        console.log("before");
-        console.dir(this.roomDataList[roomId].chessboard);
-        console.dir(this.roomDataList[roomId].chessboardTempOne);
-        console.dir(this.roomDataList[roomId].chessboardTempTwo);
+        if (this.roomDataList[roomId].chessboardTempThree !== null)
+            this.roomDataList[roomId].chessboardTempFour = this.roomDataList[roomId].chessboardTempThree.map(arr => [...arr]);
+        if (this.roomDataList[roomId].chessboardTempTwo !== null)
+            this.roomDataList[roomId].chessboardTempThree = this.roomDataList[roomId].chessboardTempTwo.map(arr => [...arr]);
         if (this.roomDataList[roomId].chessboardTempOne !== null)
             this.roomDataList[roomId].chessboardTempTwo = this.roomDataList[roomId].chessboardTempOne.map(arr => [...arr]);
         this.roomDataList[roomId].chessboardTempOne = this.roomDataList[roomId].chessboard.map(arr => [...arr]);
         this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboard.map(arr => [...arr]);
         this.roomDataList[roomId].chessboard[x][y] = color;
-        console.log("after");
-        console.dir(this.roomDataList[roomId].chessboard);
-        console.dir(this.roomDataList[roomId].chessboardTempOne);
-        console.dir(this.roomDataList[roomId].chessboardTempTwo);
         return { success: true };
     }
 
@@ -239,9 +237,11 @@ class Store {
 
     public turnBack(roomId: number): void {
         if (this.roomDataList[roomId].chessboardTempTwo !== null) {
-            this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboardTempTwo.map(arr => arr.slice())
+            this.roomDataList[roomId].chessboard = this.roomDataList[roomId].chessboardTempFour.map(arr => arr.slice());
             this.roomDataList[roomId].chessboardTempOne = null;
             this.roomDataList[roomId].chessboardTempTwo = null;
+            this.roomDataList[roomId].chessboardTempThree = null;
+            this.roomDataList[roomId].chessboardTempFour = null;
             this.roomDataList[roomId].timeLimits =  new Date(this.roomDataList[roomId].timeLimits.getTime() + 60 * 1000);
         }
     }

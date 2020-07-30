@@ -73,7 +73,6 @@ class AuthService {
             } else if (res == null) {
                 callback({ message: "failed", err: "존재하지 않는 유저입니다." });
             } else {
-                console.log(username, isWinner, isWinner ? 10 : -10)
                 UserModel.updateOne({ username: encrypt(username) }, {
                     rate: isWinner ? res.rate + 10 : res.rate - 10,
                     numOfPlayedGame: res.numOfPlayedGame + 1,
@@ -122,6 +121,8 @@ class AuthService {
         UserModel.findOne({ username: encrypt(friendname) }, (err: object, res: UserModelT): void => {
             if (err) {
                 callback({ message: "failed", err });
+            } else if (res == null) {
+                callback({ message: "failed", err: "존재하지 않는 유저입니다." });
             } else if (res.pendingFriendsList.find((user): boolean => user == username) != undefined) {
                 callback({ message: "failed", err: "이미 친구 요청을 보냈습니다." });
             } else if (res.friendsList.find((user): boolean => user == username) != undefined) {
@@ -130,8 +131,8 @@ class AuthService {
                 UserModel.findOne({ username: encrypt(TSdoesntknowusernameisstring) }, (err: object, res: UserModelT): void => {
                     if (err) {
                         callback({ message: "failed", err });
-                    } else if (res.pendingFriendsList.find((user): boolean => user == username) !== undefined) {
-                        UserModel.updateOne({ username: encrypt(TSdoesntknowusernameisstring) }, { $push: { friendsList: friendname }}, (err): any => {
+                    } else if (res.pendingFriendsList.find((user): boolean => user == friendname) !== undefined) {
+                        UserModel.updateOne({ username: encrypt(TSdoesntknowusernameisstring) }, { $push: { friendsList: username }}, (err): any => {
                             if (err) {
                                 callback({ message: "failed", err });
                             } else {
@@ -139,17 +140,17 @@ class AuthService {
                                     if (err) {
                                         callback({ message: "failed", err });
                                     } else {
-                                        callback({ message: "complete", status: "friend" });
+                                        callback({ message: "complete", data: {status: "friend"} });
                                     }
                                 });
                             }
                         });
                     } else {
-                        UserModel.updateOne({ username: encrypt(friendname) }, { $push: { pendingFriendsList: friendname }}, (err): any => {
+                        UserModel.updateOne({ username: encrypt(friendname) }, { $push: { pendingFriendsList: username }}, (err): any => {
                             if (err) {
                                 callback({ message: "failed", err });
                             } else {
-                                callback({ message: "complete", status: "pending" });
+                                callback({ message: "complete", data: { status: "pending" } });
                             }
                         });
                     }
@@ -168,6 +169,7 @@ class AuthService {
         }
         TSdoesntknowusernameisstring = username;
         UserModel.findOne({ username: encrypt(username) }, (err: object, res: UserModelT): void => {
+            console.dir(res)
             if (err) {
                 callback({ message: "failed", err });
             } else if (res.pendingFriendsList.find((user): boolean => user == friendname) == undefined) {
@@ -183,7 +185,7 @@ class AuthService {
                             if (err) {
                                 callback({ message: "failed", err });
                             } else {
-                                callback({ message: "complete", status: "friend" });
+                                callback({ message: "complete", data: {status: "friend"} });
                             }
                         });
                     }

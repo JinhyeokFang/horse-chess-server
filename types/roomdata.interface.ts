@@ -7,6 +7,8 @@ interface RoomData {
     chessboard: BoxStatus[][];
     chessboardTempOne: BoxStatus[][] | null;
     chessboardTempTwo: BoxStatus[][] | null;
+    chessboardTempThree: BoxStatus[][] | null;
+    chessboardTempFour: BoxStatus[][] | null;
     gameStatus: GameStatus;
     blackIsReady: boolean;
     whiteIsReady: boolean;
